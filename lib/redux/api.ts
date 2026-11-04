@@ -22,7 +22,16 @@ export const api = createApi({
       },
       invalidatesTags: ["categories"],
     }),
+    deleteCategory: builder.mutation<void, string>({
+      query(id) {
+        return {
+          url: `categories/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["categories"],
+    }),
   }),
 });
 
-export const { useGetCategoriesQuery, useCreateCategoryMutation } = api;
+export const { useGetCategoriesQuery, useCreateCategoryMutation, useDeleteCategoryMutation } = api;

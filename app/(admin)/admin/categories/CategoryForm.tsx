@@ -18,6 +18,7 @@ export const CategoryForm = ({ categories }: { categories: Category[] }) => {
   const {
     handleSubmit,
     register,
+    reset,
     control,
     formState: { errors },
   } = useForm({
@@ -40,6 +41,7 @@ export const CategoryForm = ({ categories }: { categories: Category[] }) => {
             dispatch(setSnackbarStatus("SUCCESS"));
             dispatch(setSnackbarText(successMessage));
             dispatch(setSnackbarOpen(true));
+            reset();
           })
           .catch((err: FetchBaseQueryError) => {
             dispatch(setSnackbarText(String(err.data)));
@@ -52,13 +54,19 @@ export const CategoryForm = ({ categories }: { categories: Category[] }) => {
     >
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, lg: 6 }}>
-          <TextField
-            sx={{ width: 1 }}
-            {...register("name")}
-            label="نام"
-            variant="outlined"
-            error={!!errors?.name}
-            helperText={errors?.name?.message}
+          <Controller
+            name="name"
+            control={control}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                sx={{ width: 1 }}
+                label="نام"
+                variant="outlined"
+                error={!!fieldState.error}
+                helperText={fieldState.error?.message}
+              />
+            )}
           />
         </Grid>
         <Grid size={{ xs: 12, lg: 6 }}>

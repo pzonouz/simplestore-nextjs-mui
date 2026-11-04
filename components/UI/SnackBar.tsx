@@ -14,7 +14,7 @@ export const SnackBar = () => {
       open={open}
       autoHideDuration={6000}
       onClose={() => {
-        setSnackbarOpen(false);
+        dispatch(setSnackbarOpen(false));
       }}
     >
       <Alert
