@@ -1,12 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Category, FileType } from "../types";
 import { env } from "../env";
+import type { Category, FileType, Product, Signin } from "../types";
+
 ("../types.ts");
 
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: env.NEXT_PUBLIC_API_URL }),
-  tagTypes: ["categories", "files"],
+  baseQuery: fetchBaseQuery({
+    baseUrl: env.NEXT_PUBLIC_API_URL,
+    credentials: "include",
+  }),
+  tagTypes: ["categories", "files", "products"],
   endpoints: (builder) => ({
     getCategories: builder.query<Category[], void>({
       query: () => `categories`,
@@ -92,6 +96,52 @@ export const api = createApi({
       },
       invalidatesTags: ["files"],
     }),
+    getProducts: builder.query<Product[], void>({
+      query: () => `products`,
+      providesTags: ["products"],
+    }),
+    getProduct: builder.query<Product, string>({
+      query: (id) => `products/${id}`,
+      providesTags: ["products"],
+    }),
+    createProduct: builder.mutation<void, Partial<Product>>({
+      query(body) {
+        return {
+          url: `products`,
+          method: "POST",
+          body: body,
+        };
+      },
+      invalidatesTags: ["products"],
+    }),
+    editProduct: builder.mutation<void, Partial<Product>>({
+      query(body) {
+        return {
+          url: `products/${body.id}`,
+          method: "PATCH",
+          body: body,
+        };
+      },
+      invalidatesTags: ["products"],
+    }),
+    deleteProduct: builder.mutation<void, string>({
+      query(id) {
+        return {
+          url: `products/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["products"],
+    }),
+    signin: builder.mutation<void, Partial<Signin>>({
+      query(body) {
+        return {
+          url: `auth/login`,
+          method: "POST",
+          body: body,
+        };
+      },
+    }),
   }),
 });
 
@@ -107,4 +157,10 @@ export const {
   useEditFileMutation,
   useUploadFileMutation,
   useDeleteFileMutation,
+  useGetProductsQuery,
+  useCreateProductMutation,
+  useDeleteProductMutation,
+  useEditProductMutation,
+  useGetProductQuery,
+  useSigninMutation,
 } = api;

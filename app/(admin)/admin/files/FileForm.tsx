@@ -1,4 +1,7 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Box,
   Button,
@@ -7,26 +10,23 @@ import {
   Skeleton,
   TextField,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FileType, FormType } from "@/lib/types";
+import { ZoomOnHoverImage } from "@/components/UI/ZoomOnHoverImage";
+import { env } from "@/lib/env";
 import {
   useCreateFileMutation,
   useEditFileMutation,
   useUploadFileMutation,
 } from "@/lib/redux/api";
 import { useAppDispatch } from "@/lib/redux/hooks";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useRouter } from "next/navigation";
+import { fileCreateSchema } from "@/lib/schemas";
+import type { FileType, FormType } from "@/lib/types";
 import { OpenErrorSnackbar, OpenSuccessSnackbar } from "@/lib/utils/snackbar";
 import { translateErrorToPersian } from "@/lib/utils/translate";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { styled } from "@mui/material/styles";
-import { useEffect, useState } from "react";
-import { ZoomOnHoverImage } from "@/components/UI/ZoomOnHoverImage";
-import { env } from "@/lib/env";
-import { fileCreateSchema } from "@/lib/schemas";
 
 export const FileForm = ({
   type,
@@ -41,12 +41,17 @@ export const FileForm = ({
   const [uplaod, { isLoading: uploadIsLoading }] = useUploadFileMutation();
   const { handleSubmit, reset, control, setValue, watch } = useForm({
     resolver: zodResolver(fileCreateSchema),
-    defaultValues: file ?? {
+    defaultValues: {
       name: "",
       url: "",
     },
+    values: file,
   });
-  useEffect(() => { if (file?.url) { setUrl(file?.url) } }, [file])
+  useEffect(() => {
+    if (file?.url) {
+      setUrl(file?.url);
+    }
+  }, [file]);
   const [editFile, { isLoading: editIsLoading }] = useEditFileMutation();
   const [createFile, { isLoading: createIsLoading }] = useCreateFileMutation();
   const dispatch = useAppDispatch();
@@ -64,19 +69,19 @@ export const FileForm = ({
   return (
     <Box
       onSubmit={handleSubmit((data) => {
-        if (type == "CREATE") {
+        if (type === "CREATE") {
           createFile(data)
             .unwrap()
             .then(() => {
               OpenSuccessSnackbar(dispatch);
-              setUrl(null)
+              setUrl(null);
               reset();
             })
             .catch((err: FetchBaseQueryError) => {
               OpenErrorSnackbar(dispatch, translateErrorToPersian(err));
             });
         }
-        if (type == "EDIT") {
+        if (type === "EDIT") {
           editFile({ ...data, id: file?.id })
             .unwrap()
             .then(() => {
@@ -118,7 +123,6 @@ export const FileForm = ({
                 loading={uploadIsLoading}
                 size="large"
                 component="label"
-                role={undefined}
                 variant="contained"
                 tabIndex={-1}
                 startIcon={<CloudUploadIcon />}
@@ -141,7 +145,7 @@ export const FileForm = ({
                       .catch((err) => {
                         OpenErrorSnackbar(
                           dispatch,
-                          translateErrorToPersian(err),
+                          translateErrorToPersian(err) ?? "",
                         );
                       });
                   }}
@@ -185,7 +189,7 @@ export const FileForm = ({
             >
               ثبت
             </Button>
-            {type == "EDIT" && (
+            {type === "EDIT" && (
               <Button onClick={() => router.back()} variant="outlined">
                 بازگشت
               </Button>

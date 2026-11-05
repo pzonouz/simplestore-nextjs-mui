@@ -1,4 +1,5 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Autocomplete,
   Box,
@@ -7,18 +8,17 @@ import {
   Skeleton,
   TextField,
 } from "@mui/material";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { categoryCreateSchema } from "@/lib/schemas";
-import { Category, FormType } from "@/lib/types";
 import {
   useCreateCategoryMutation,
   useEditCategoryMutation,
   useGetCategoriesQuery,
 } from "@/lib/redux/api";
 import { useAppDispatch } from "@/lib/redux/hooks";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useRouter } from "next/navigation";
+import { categoryCreateSchema } from "@/lib/schemas";
+import type { Category, FormType } from "@/lib/types";
 import { OpenErrorSnackbar, OpenSuccessSnackbar } from "@/lib/utils/snackbar";
 import { translateErrorToPersian } from "@/lib/utils/translate";
 
@@ -49,7 +49,7 @@ export const CategoryForm = ({
   return (
     <Box
       onSubmit={handleSubmit((data) => {
-        if (type == "CREATE") {
+        if (type === "CREATE") {
           createCategory(data)
             .unwrap()
             .then(() => {
@@ -60,7 +60,7 @@ export const CategoryForm = ({
               OpenErrorSnackbar(dispatch, translateErrorToPersian(err));
             });
         }
-        if (type == "EDIT") {
+        if (type === "EDIT") {
           editCategory({ ...data, id: category?.id })
             .unwrap()
             .then(() => {
@@ -106,7 +106,7 @@ export const CategoryForm = ({
                   sx={{ width: 1 }}
                   disablePortal
                   onBlur={field.onBlur}
-                  value={categories?.find((c) => c.id == field?.value) ?? null}
+                  value={categories?.find((c) => c.id === field?.value) ?? null}
                   options={categories ?? []}
                   getOptionLabel={(item) => item?.name}
                   renderInput={(params) => (
@@ -118,6 +118,7 @@ export const CategoryForm = ({
           </Grid>
           <Grid size={{ xs: 12, lg: 12 }}>
             <Controller
+              control={control}
               name="description"
               render={({ field, fieldState }) => (
                 <TextField
@@ -139,7 +140,7 @@ export const CategoryForm = ({
             >
               ثبت
             </Button>
-            {type == "EDIT" && (
+            {type === "EDIT" && (
               <Button onClick={() => router.back()} variant="outlined">
                 بازگشت
               </Button>
