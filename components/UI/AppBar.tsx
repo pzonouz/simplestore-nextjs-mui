@@ -16,6 +16,7 @@ import { MenuItemType } from "@/lib/types";
 const AdminMenu: MenuItemType[] = [
   { title: "خانه", href: "/admin" },
   { title: "دسته بندی ها", href: "/admin/categories" },
+  { title: "فایلها", href: "/admin/files" },
   { title: "محصولات", href: "/admin/products" },
 ];
 export default function AdminAppBar() {

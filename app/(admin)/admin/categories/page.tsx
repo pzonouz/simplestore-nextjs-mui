@@ -12,9 +12,8 @@ import {
 import { Collapsible } from "@/components/UI/Collapsible";
 import { CategoryForm } from "./CategoryForm";
 import { useState } from "react";
-import { useAppDispatch } from "@/lib/redux/hooks";
 import { OpenErrorSnackbar, OpenSuccessSnackbar } from "@/lib/utils/snackbar";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useAppDispatch } from "@/lib/redux/hooks";
 import { translateErrorToPersian } from "@/lib/utils/translate";
 
 export default function AdminCatgories() {
@@ -39,6 +38,7 @@ export default function AdminCatgories() {
       header: "عملیات",
       cell: ({ row }) => (
         <TableRowAction
+          entity="categories"
           onDelete={(id) => {
             setDeleteId(id);
           }}
@@ -71,10 +71,10 @@ export default function AdminCatgories() {
                   .then(() => {
                     OpenSuccessSnackbar(dispatch);
                   })
-                  .catch((err: FetchBaseQueryError) => {
+                  .catch((err) => {
+                    setDeleteId((null))
                     OpenErrorSnackbar(dispatch, translateErrorToPersian(err));
-                  })
-                  .finally(() => setDeleteId(null));
+                  });
               }}
               variant="contained"
               color="error"
@@ -92,7 +92,7 @@ export default function AdminCatgories() {
           دسته بندی ها
         </Typography>
         <Collapsible>
-          <CategoryForm categories={data ?? []} />
+          <CategoryForm type="CREATE" />
         </Collapsible>
         <DataTable
           id="category"
