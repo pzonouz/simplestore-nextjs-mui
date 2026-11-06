@@ -1,6 +1,7 @@
 "use client";
-import * as React from "react";
 import { Box } from "@mui/material";
+import Image from "next/image";
+import * as React from "react";
 
 export function ZoomOnHoverImage({
   src,
@@ -8,12 +9,17 @@ export function ZoomOnHoverImage({
   scale = 2.5,
   width,
   height,
+  sizes = "(max-width: 600px) 100vw, 400px",
+  priority = false, // ← new prop
 }: {
   src: string;
   alt: string;
   scale?: number;
   width?: number;
   height?: number;
+  sizes?: string;
+
+  priority?: boolean;
 }) {
   const [zoom, setZoom] = React.useState(false);
   const [origin, setOrigin] = React.useState("50% 50%");
@@ -43,8 +49,8 @@ export function ZoomOnHoverImage({
       onPointerLeave={() => setZoom(false)}
       onPointerCancel={() => setZoom(false)}
       sx={{
-        width: width,
-        height: height,
+        width,
+        height,
         position: "relative",
         aspectRatio: "1",
         overflow: "hidden",
@@ -53,13 +59,14 @@ export function ZoomOnHoverImage({
         touchAction: "none",
       }}
     >
-      <img
+      <Image
+        priority={priority}
         src={src}
         alt={alt}
+        fill
+        sizes={sizes}
         draggable={false}
         style={{
-          width: "100%",
-          height: "100%",
           objectFit: "cover",
           transformOrigin: origin,
           transform: zoom ? `scale(${scale})` : "none",

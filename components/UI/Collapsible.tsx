@@ -1,8 +1,9 @@
 "use client";
-import { Box, Button, Collapse } from "@mui/material";
-import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/AddCircle";
 import MinusIcon from "@mui/icons-material/RemoveCircle";
+import { Box, Button, Collapse } from "@mui/material";
+import type React from "react";
+import { useState } from "react";
 
 export const Collapsible = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = useState(false);

@@ -1,7 +1,7 @@
 "use client";
-import { useGetFileQuery } from "@/lib/redux/api";
 import { Box, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
+import { useGetFileQuery } from "@/lib/redux/api";
 import { FileForm } from "../../FileForm";
 
 const page = () => {

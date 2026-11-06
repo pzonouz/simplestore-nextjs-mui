@@ -1,9 +1,10 @@
 "use client";
-import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-import { prefixer } from "stylis";
+import { CacheProvider } from "@emotion/react";
 import rtlPlugin from "@mui/stylis-plugin-rtl";
-import React from "react";
+import type React from "react";
+import { prefixer } from "stylis";
+
 const rtlCache = createCache({
   key: "muirtl",
   stylisPlugins: [prefixer, rtlPlugin],

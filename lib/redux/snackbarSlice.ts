@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { successMessage } from "../contants";
+import { createSlice } from "@reduxjs/toolkit";
+import { successMessage } from "../constants";
 
 export type SnackbarStatusType = "SUCCESS" | "ERROR";
 export type SnackbarStateType = {
@@ -37,6 +37,11 @@ export const snackbarSlice = createSlice({
   },
 });
 
-export const { setSnackbar, setSnackbarOpen, setSnackbarStatus, setSnackbarText } = snackbarSlice.actions;
+export const {
+  setSnackbar,
+  setSnackbarOpen,
+  setSnackbarStatus,
+  setSnackbarText,
+} = snackbarSlice.actions;
 
 export default snackbarSlice.reducer;

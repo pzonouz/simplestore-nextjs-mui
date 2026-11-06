@@ -21,7 +21,7 @@ export default function AdminCatgories() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const productColumns: Array<ColumnDef<typeof features, Product>> = [
     {
-      accessorKey: "name", // accessorKey shorthand
+      accessorKey: "name",
       header: "نام",
       cell: (info) => info.getValue(),
     },

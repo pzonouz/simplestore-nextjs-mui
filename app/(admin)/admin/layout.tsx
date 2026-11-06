@@ -1,5 +1,5 @@
-import AdminAppBar from "@/components/UI/AppBar";
 import { Box } from "@mui/material";
+import AdminAppBar from "@/components/UI/AppBar";
 
 export default function AdminLayout({
   children,

@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Dialog,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -16,22 +17,29 @@ import {
   Select,
   Skeleton,
   TextField,
+  Typography,
 } from "@mui/material";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useRouter } from "next/navigation";
+import { useState, type ChangeEvent } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
+import { OpenReferesh } from "@/components/DATA/OpenReferesh";
+import { Tiptap } from "@/components/DATA/Tiptap";
+import { ImageManager } from "@/components/UI/ImageManager";
 import {
+  api,
   useCreateProductMutation,
   useEditProductMutation,
   useGetCategoriesQuery,
 } from "@/lib/redux/api";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { productCreateSchema } from "@/lib/schemas";
-import type { FormType, Product } from "@/lib/types";
+import type { FileType, FormType, Product } from "@/lib/types";
 import { OpenErrorSnackbar, OpenSuccessSnackbar } from "@/lib/utils/snackbar";
 import { translateErrorToPersian } from "@/lib/utils/translate";
-import { ChangeEvent } from "react";
+import { ZoomOnHoverImage } from "@/components/UI/ZoomOnHoverImage";
+import { env } from "@/lib/env";
 
 export const ProductForm = ({
   type,
@@ -47,6 +55,7 @@ export const ProductForm = ({
     reset,
     control,
     getValues,
+    watch,
     setValue,
     formState: { errors },
   } = useForm({
@@ -60,6 +69,7 @@ export const ProductForm = ({
       packingType: "Quantity" as const,
       packingCoefficientTypes: [],
       description: "",
+      imageurl: "",
     },
   });
   const { data: categories, isLoading: getIsLoading } = useGetCategoriesQuery();
@@ -68,6 +78,7 @@ export const ProductForm = ({
     useCreateProductMutation();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [imageSelectOpen, setImageSelectOpen] = useState(false);
   const checkboxOnChange = (e: ChangeEvent<HTMLInputElement, Element>) => {
     const value = e.currentTarget?.value;
     const checked = e.currentTarget?.checked;
@@ -129,30 +140,43 @@ export const ProductForm = ({
               )}
             />
           </Grid>
-          <Grid size={{ xs: 12, lg: 6 }}>
+          <Grid
+            sx={{ display: "flex", flexDirection: "row", gap: "4px" }}
+            size={{ xs: 12, lg: 6 }}
+          >
             <Controller
               control={control}
               name="category"
               render={({ field, fieldState }) => (
-                <Autocomplete
-                  onChange={(_, option) => field.onChange(option?.id ?? null)}
-                  sx={{ width: 1 }}
-                  disablePortal
-                  onBlur={field.onBlur}
-                  value={categories?.find((c) => c.id === field?.value) ?? null}
-                  options={categories ?? []}
-                  getOptionLabel={(item) => item?.name}
-                  renderInput={(params) => (
-                    <TextField
-                      inputRef={field.ref}
-                      {...params}
-                      label="دسته بندی"
-                      error={!!fieldState.error}
-                      helperText={fieldState?.error?.message}
-                    />
-                  )}
-                />
+                <Box sx={{ flexGrow: 1 }}>
+                  <Autocomplete
+                    onChange={(_, option) => field.onChange(option?.id ?? null)}
+                    sx={{ width: 1 }}
+                    disablePortal
+                    onBlur={field.onBlur}
+                    value={
+                      categories?.find((c) => c.id === field?.value) ?? null
+                    }
+                    options={categories ?? []}
+                    getOptionLabel={(item) => item?.name}
+                    renderInput={(params) => (
+                      <TextField
+                        inputRef={field.ref}
+                        {...params}
+                        label="دسته بندی"
+                        error={!!fieldState.error}
+                        helperText={fieldState?.error?.message}
+                      />
+                    )}
+                  />
+                </Box>
               )}
+            />
+            <OpenReferesh
+              address="categories"
+              refresher={() => {
+                dispatch(api.util.invalidateTags(["categories"]));
+              }}
             />
           </Grid>
 
@@ -236,99 +260,179 @@ export const ProductForm = ({
               )}
             />
           </Grid>
+          {watch("packingType") !== "Quantity" && (
+            <Grid size={{ xs: 12, lg: 6 }}>
+              <Controller
+                control={control}
+                name="packingCoefficientTypes"
+                render={({ fieldState, field }) => (
+                  <FormControl error={!!fieldState.error} component="fieldset">
+                    <FormLabel component="legend">ضرایب بسته بندی</FormLabel>
+                    <FormGroup
+                      sx={{ display: "flex", flexDirection: "row", gap: "3px" }}
+                    >
+                      <FormControlLabel
+                        label="یک"
+                        control={
+                          <Checkbox
+                            value={1}
+                            checked={getValues(
+                              "packingCoefficientTypes",
+                            ).includes(1)}
+                            onChange={(e) => {
+                              checkboxOnChange(e);
+                            }}
+                            onBlur={field.onBlur}
+                          />
+                        }
+                      />
+                      <FormControlLabel
+                        label="1,000"
+                        control={
+                          <Checkbox
+                            value={1000}
+                            checked={getValues(
+                              "packingCoefficientTypes",
+                            ).includes(1000)}
+                            onChange={(e) => {
+                              checkboxOnChange(e);
+                            }}
+                            onBlur={field.onBlur}
+                          />
+                        }
+                      />
+                      <FormControlLabel
+                        label="1,000,000"
+                        control={
+                          <Checkbox
+                            value={1000000}
+                            checked={getValues(
+                              "packingCoefficientTypes",
+                            ).includes(1000000)}
+                            onChange={(e) => {
+                              checkboxOnChange(e);
+                            }}
+                            onBlur={field.onBlur}
+                          />
+                        }
+                      />
+                    </FormGroup>
+                    <FormHelperText>{fieldState.error?.message}</FormHelperText>
+                  </FormControl>
+                )}
+              />
+            </Grid>
+          )}
+
+          {/* ── Image field ── */}
           <Grid size={{ xs: 12, lg: 6 }}>
             <Controller
               control={control}
-              name="packingCoefficientTypes"
-              render={({ fieldState, field }) => (
-                <FormControl error={!!fieldState.error} component="fieldset">
-                  <FormLabel component="legend">ضرایب بسته بندی</FormLabel>
-                  <FormGroup
-                    sx={{ display: "flex", flexDirection: "row", gap: "3px" }}
-                  >
-                    <FormControlLabel
-                      label="یک"
-                      control={
-                        <Checkbox
-                          value={1}
-                          checked={getValues(
-                            "packingCoefficientTypes",
-                          ).includes(1)}
-                          onChange={(e) => {
-                            checkboxOnChange(e);
-                          }}
-                          onBlur={field.onBlur}
-                        />
-                      }
-                    />
-                    <FormControlLabel
-                      label="1,000"
-                      control={
-                        <Checkbox
-                          value={1000}
-                          checked={getValues(
-                            "packingCoefficientTypes",
-                          ).includes(1000)}
-                          onChange={(e) => {
-                            checkboxOnChange(e);
-                          }}
-                          onBlur={field.onBlur}
-                        />
-                      }
-                    />
-                    <FormControlLabel
-                      label="1,000,000"
-                      control={
-                        <Checkbox
-                          value={1000000}
-                          checked={getValues(
-                            "packingCoefficientTypes",
-                          ).includes(1000000)}
-                          onChange={(e) => {
-                            checkboxOnChange(e);
-                          }}
-                          onBlur={field.onBlur}
-                        />
-                      }
-                    />
-                  </FormGroup>
-                  <FormHelperText>{fieldState.error?.message}</FormHelperText>
-                </FormControl>
+              name="imageurl"
+              render={({ field, fieldState }) => (
+                <Box>
+                  {field.value ? (
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                      <ZoomOnHoverImage
+                        width={64}
+                        height={64}
+                        scale={5}
+                        alt=""
+                        src={`${env.NEXT_PUBLIC_BASE_URL}/${field.value}`}
+                      />
+                      <Button
+                        variant="outlined"
+                        onClick={() => setImageSelectOpen(true)}
+                      >
+                        تغییر تصویر
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={() =>
+                          field.onChange("", {
+                            shouldDirty: true,
+                            shouldValidate: true,
+                          })
+                        }
+                      >
+                        حذف تصویر
+                      </Button>
+                    </Box>
+                  ) : (
+                    <Button
+                      onClick={() => setImageSelectOpen(true)}
+                      variant="contained"
+                    >
+                      افزودن تصویر
+                    </Button>
+                  )}
+                  {fieldState.error && (
+                    <FormHelperText error>
+                      {fieldState.error.message}
+                    </FormHelperText>
+                  )}
+                </Box>
               )}
             />
           </Grid>
+
           <Grid size={{ xs: 12, lg: 12 }}>
             <Controller
               control={control}
               name="description"
               render={({ field, fieldState }) => (
-                <TextField
-                  {...field}
-                  sx={{ width: 1 }}
-                  label="توضیحات"
-                  variant="outlined"
-                  error={!!fieldState?.error}
-                  helperText={fieldState?.error?.message}
-                />
+                <Box>
+                  <Tiptap
+                    error={!!fieldState.error}
+                    content={field.value}
+                    setContent={(content: string) => {
+                      field.onChange(content);
+                    }}
+                  />
+                  <Typography sx={{}} className="error">
+                    {errors?.description?.message}
+                  </Typography>
+                </Box>
               )}
             />
           </Grid>
-          <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
-            <Button
-              loading={createIsLoading || editIsLoading}
-              type="submit"
-              variant="contained"
-            >
-              ثبت
-            </Button>
-            {type === "EDIT" && (
-              <Button onClick={() => router.back()} variant="outlined">
-                بازگشت
+
+          <Grid size={{ xs: 12 }}>
+            <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
+              <Button
+                loading={createIsLoading || editIsLoading}
+                type="submit"
+                variant="contained"
+              >
+                ثبت
               </Button>
-            )}
-          </Box>
+              {type === "EDIT" && (
+                <Button onClick={() => router.back()} variant="outlined">
+                  بازگشت
+                </Button>
+              )}
+            </Box>
+          </Grid>
         </Grid>
       )}
+
+      <Dialog
+        open={imageSelectOpen}
+        onClose={() => setImageSelectOpen(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <ImageManager
+          onSelect={(file: FileType) => {
+            setValue("imageurl", file?.url, {
+              shouldDirty: true,
+              shouldValidate: true,
+            });
+            setImageSelectOpen(false);
+          }}
+        />
+      </Dialog>
     </Box>
   );
 };

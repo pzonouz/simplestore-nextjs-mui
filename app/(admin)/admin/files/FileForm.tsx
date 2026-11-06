@@ -38,7 +38,7 @@ export const FileForm = ({
   externlLoading?: boolean;
 }) => {
   const [url, setUrl] = useState<string | null>(null);
-  const [uplaod, { isLoading: uploadIsLoading }] = useUploadFileMutation();
+  const [upload, { isLoading: uploadIsLoading }] = useUploadFileMutation();
   const { handleSubmit, reset, control, setValue, watch } = useForm({
     resolver: zodResolver(fileCreateSchema),
     defaultValues: {
@@ -136,7 +136,7 @@ export const FileForm = ({
                       "file",
                       event.currentTarget?.files?.[0] as File,
                     );
-                    uplaod(formData)
+                    upload(formData)
                       .unwrap()
                       .then((data) => {
                         setValue("url", data.url);

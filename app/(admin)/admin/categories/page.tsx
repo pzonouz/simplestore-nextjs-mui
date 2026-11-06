@@ -1,20 +1,20 @@
 "use client";
-import { DataTable } from "@/components/Table/DataTable";
 import { Box, Button, Dialog, Typography } from "@mui/material";
-import type { Category } from "@/lib/types";
 import type { ColumnDef } from "@tanstack/react-table";
+import { useState } from "react";
+import { DataTable } from "@/components/Table/DataTable";
 import type { features } from "@/components/Table/features";
 import { TableRowAction } from "@/components/Table/TableRowAction";
+import { Collapsible } from "@/components/UI/Collapsible";
 import {
   useDeleteCategoryMutation,
   useGetCategoriesQuery,
 } from "@/lib/redux/api";
-import { Collapsible } from "@/components/UI/Collapsible";
-import { CategoryForm } from "./CategoryForm";
-import { useState } from "react";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import type { Category } from "@/lib/types";
 import { OpenErrorSnackbar, OpenSuccessSnackbar } from "@/lib/utils/snackbar";
 import { translateErrorToPersian } from "@/lib/utils/translate";
-import { useAppDispatch } from "@/lib/redux/hooks";
+import { CategoryForm } from "./CategoryForm";
 
 export default function AdminCatgories() {
   const dispatch = useAppDispatch();

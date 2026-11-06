@@ -1,23 +1,19 @@
 "use client";
 import { Box, Typography } from "@mui/material";
-import { CategoryForm } from "../../ProductForm";
-import { useGetCategoryQuery } from "@/lib/redux/api";
 import { useParams } from "next/navigation";
+import { useGetProductQuery } from "@/lib/redux/api";
+import { ProductForm } from "../../ProductForm";
 
 const page = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: category, isLoading } = useGetCategoryQuery(id);
+  const { data: product, isLoading } = useGetProductQuery(id);
   return (
     <Box>
       <Typography variant="h4" sx={{ textAlign: "center", paddingY: "2rem" }}>
         ویرایش دسته بندی
       </Typography>
-      {category && (
-        <CategoryForm
-          type="EDIT"
-          category={category}
-          externlLoading={isLoading}
-        />
+      {product && (
+        <ProductForm type="EDIT" product={product} externlLoading={isLoading} />
       )}
     </Box>
   );

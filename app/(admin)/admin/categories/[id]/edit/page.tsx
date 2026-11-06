@@ -1,8 +1,8 @@
 "use client";
 import { Box, Typography } from "@mui/material";
-import { CategoryForm } from "../../CategoryForm";
-import { useGetCategoryQuery } from "@/lib/redux/api";
 import { useParams } from "next/navigation";
+import { useGetCategoryQuery } from "@/lib/redux/api";
+import { CategoryForm } from "../../CategoryForm";
 
 const page = () => {
   const { id } = useParams<{ id: string }>();

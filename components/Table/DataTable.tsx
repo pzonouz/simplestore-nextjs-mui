@@ -1,6 +1,4 @@
 "use client";
-import { ColumnDef, RowData, useTable } from "@tanstack/react-table";
-import { features } from "./features";
 import {
   Paper,
   Skeleton,
@@ -11,6 +9,8 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { type ColumnDef, type RowData, useTable } from "@tanstack/react-table";
+import { features } from "./features";
 
 export function DataTable<T extends RowData>({
   id,

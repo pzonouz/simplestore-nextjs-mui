@@ -1,29 +1,30 @@
-import * as React from "react";
 import { Menu } from "@base-ui/react/menu";
 import { Menubar as BaseMenubar } from "@base-ui/react/menubar";
-import { styled } from "@mui/material/styles";
+import CheckIcon from "@mui/icons-material/Check";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
+import Divider, { type DividerProps } from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItemButton, {
-  ListItemButtonProps,
+  type ListItemButtonProps,
 } from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import ListSubheader, { ListSubheaderProps } from "@mui/material/ListSubheader";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import CheckIcon from "@mui/icons-material/Check";
-import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import Divider, { DividerProps } from "@mui/material/Divider";
+import ListSubheader, {
+  type ListSubheaderProps,
+} from "@mui/material/ListSubheader";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import type * as React from "react";
 
 const StyledMenubar = styled("div")(({ theme }) => ({
   display: "flex",
   gap: "1px",
   p: 0.25,
-  // background: (theme.vars || theme).palette.grey[100],
   background: "transparent",
   ...theme.applyStyles("dark", {
     background: (theme.vars || theme).palette.grey[800],

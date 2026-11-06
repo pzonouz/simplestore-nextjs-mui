@@ -1,20 +1,20 @@
 "use client";
-import { DataTable } from "@/components/Table/DataTable";
 import { Box, Button, Dialog, Typography } from "@mui/material";
-import { FileType } from "@/lib/types";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import type { ColumnDef } from "@tanstack/react-table";
-import { features } from "@/components/Table/features";
-import { TableRowAction } from "@/components/Table/TableRowAction";
-import { useDeleteFileMutation, useGetFilesQuery } from "@/lib/redux/api";
-import { Collapsible } from "@/components/UI/Collapsible";
-import { FileForm } from "./FileForm";
 import { useState } from "react";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { OpenErrorSnackbar, OpenSuccessSnackbar } from "@/lib/utils/snackbar";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { translateErrorToPersian } from "@/lib/utils/translate";
+import { DataTable } from "@/components/Table/DataTable";
+import type { features } from "@/components/Table/features";
+import { TableRowAction } from "@/components/Table/TableRowAction";
+import { Collapsible } from "@/components/UI/Collapsible";
 import { ZoomOnHoverImage } from "@/components/UI/ZoomOnHoverImage";
 import { env } from "@/lib/env";
+import { useDeleteFileMutation, useGetFilesQuery } from "@/lib/redux/api";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import type { FileType } from "@/lib/types";
+import { OpenErrorSnackbar, OpenSuccessSnackbar } from "@/lib/utils/snackbar";
+import { translateErrorToPersian } from "@/lib/utils/translate";
+import { FileForm } from "./FileForm";
 
 export default function AdminFiles() {
   const { data, isLoading } = useGetFilesQuery();
@@ -23,7 +23,7 @@ export default function AdminFiles() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const fileColumns: Array<ColumnDef<typeof features, FileType>> = [
     {
-      accessorKey: "name", // accessorKey shorthand
+      accessorKey: "name",
       header: "نام",
       cell: (info) => info.getValue(),
     },
@@ -32,6 +32,7 @@ export default function AdminFiles() {
       cell: ({ row }) => (
         <Box sx={{ width: "4rem", height: "4rem" }}>
           <ZoomOnHoverImage
+            priority={row.index === 0}
             scale={5}
             src={`${env.NEXT_PUBLIC_BASE_URL}/${row?.original?.url}`}
             alt={row?.original?.name}

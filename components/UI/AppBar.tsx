@@ -1,18 +1,19 @@
 "use client";
-import * as React from "react";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import MenuItem from "@mui/material/MenuItem";
+import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Switch from "@mui/material/Switch";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import type { MenuItemType } from "@/lib/types";
 import MobileMenu from "./MobileMenu";
-import { MenuItemType } from "@/lib/types";
+
 const AdminMenu: MenuItemType[] = [
   { title: "خانه", href: "/admin" },
   { title: "دسته بندی ها", href: "/admin/categories" },

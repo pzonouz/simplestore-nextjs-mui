@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { NameError } from "./contants";
+import { NameError } from "./constants";
 export const categoryCreateSchema = z.object({
   name: z.string({ error: NameError }).min(1, { error: NameError }),
   parent: z.string().nullish(),
@@ -33,7 +33,9 @@ export const productCreateSchema = z.object({
   category: z
     .string({ error: "نام دسته بندی را وارد کنید" })
     .min(1, { error: "نام دسته بندی را وارد کنید" }),
-  description: z.string().nullish(),
+  description: z
+    .string({ error: "توضیحات را وارد کنید" })
+    .min(1, { error: "توضیحات را وارد کنید" }),
   packingType: packingTypeSchema,
   packingCoefficientTypes: z.array(z.number()),
 });
@@ -66,5 +68,6 @@ export const signupSchema = z
       .min(1, { error: "پسورد را وارد کنید" }),
   })
   .superRefine((ctx, values) => {
-    console.log("ctx", ctx), console.log("values", values);
+    console.log("ctx", ctx);
+    console.log("values", values);
   });

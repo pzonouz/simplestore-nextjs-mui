@@ -16,6 +16,13 @@ export const translateErrorToPersian = (err: FetchBaseQueryError): string => {
     ) {
       return "برای دسته بندی کالای تعریف شده وجود دارد";
     }
+    if (
+      err?.data?.includes(
+        'duplicate key value violates unique constraint "products_name_key"',
+      )
+    ) {
+      return "نام کالا تکراری است";
+    }
     return err?.data;
   }
   return "error";

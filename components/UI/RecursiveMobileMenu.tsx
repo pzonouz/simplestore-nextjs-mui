@@ -1,13 +1,13 @@
-import { MenuItemType } from "@/lib/types.ts";
+import Link from "next/link";
+import type { MenuItemType } from "@/lib/types.ts";
 import {
+  MenuItem,
+  MenuPopup,
   MenuPortal,
   MenuPositioner,
-  MenuPopup,
-  MenuItem,
   MenuSubmenuRoot,
   MenuSubmenuTrigger,
 } from "./MenuBar.tsx";
-import Link from "next/link";
 export const RecursiveMobileMenu = ({ item }: { item: MenuItemType }) => {
   const hasChildren = item?.children && item?.children?.length > 0;
   if (hasChildren) {
@@ -18,7 +18,7 @@ export const RecursiveMobileMenu = ({ item }: { item: MenuItemType }) => {
           <MenuPositioner alignOffset={-4}>
             <MenuPopup>
               {item?.children?.map((item) => (
-                <RecursiveMobileMenu item={item} />
+                <RecursiveMobileMenu key={item?.title} item={item} />
               ))}
             </MenuPopup>
           </MenuPositioner>

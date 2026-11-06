@@ -1,6 +1,6 @@
 "use client";
-import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setSnackbarOpen } from "@/lib/redux/snackbarSlice";
 
@@ -21,7 +21,7 @@ export const SnackBar = () => {
         onClose={() => {
           dispatch(setSnackbarOpen(false));
         }}
-        severity={status == "SUCCESS" ? "success" : "error"}
+        severity={status === "SUCCESS" ? "success" : "error"}
         variant="filled"
         sx={{ width: "100%" }}
       >
