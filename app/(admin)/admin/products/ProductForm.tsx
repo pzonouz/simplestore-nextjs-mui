@@ -91,9 +91,10 @@ export const ProductForm = ({
         : selected?.filter((v: number) => v !== Number(value)),
     );
   };
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     setValue("slug", watch("name").replaceAll(" ", "_"));
-  }, [setValue, watch]);
+  }, [setValue, watch("name")]);
   return (
     <Box
       onSubmit={handleSubmit((data) => {
