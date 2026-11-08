@@ -2,7 +2,6 @@ export const revalidate = 3600; // regenerate at most once per hour
 export const dynamicParams = true; // new slugs are rendered on first request, then cached
 
 import { Box, Typography } from "@mui/material";
-import Image from "next/image";
 import { env } from "@/lib/env";
 import type { Product } from "@/lib/types";
 import "./page.css";
@@ -93,7 +92,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
     <>
       <script
         type="application/ld+json"
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: ""
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
@@ -120,15 +119,14 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               aspectRatio: 4 / 3,
             }}
           >
-            <Image
+            {/** biome-ignore lint/performance/noImgElement: "" */}
+            <img
               style={{
                 borderColor: "#EEE",
                 borderWidth: "1px",
                 borderRadius: "1rem",
                 aspectRatio: 1,
               }}
-              fill
-              priority
               alt={product.name}
               src={`${env.BASE_URL}/${product.imageUrl}`}
             />
@@ -173,7 +171,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
       <Box
         id="tiptap"
         sx={{ fontFamily: "iransansx", paddingY: "2rem" }}
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: ""
         dangerouslySetInnerHTML={{
           __html: product.description,
         }}

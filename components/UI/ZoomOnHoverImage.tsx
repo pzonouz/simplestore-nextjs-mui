@@ -59,13 +59,11 @@ export function ZoomOnHoverImage({
         touchAction: "none",
       }}
     >
-      <Image
-        priority={priority}
+      {/** biome-ignore lint/performance/noImgElement: <explanation> */}
+      <img
         src={src}
         alt={alt}
-        fill
         sizes={sizes}
-        draggable={false}
         style={{
           objectFit: "cover",
           transformOrigin: origin,
