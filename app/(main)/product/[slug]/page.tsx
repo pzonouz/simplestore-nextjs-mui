@@ -1,15 +1,102 @@
+export const revalidate = 3600; // regenerate at most once per hour
+export const dynamicParams = true; // new slugs are rendered on first request, then cached
+
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { env } from "@/lib/env";
 import type { Product } from "@/lib/types";
 import "./page.css";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { cache } from "react";
+
+const siteUrl = env.BASE_URL;
+const stripHtml = (html = "") =>
+  html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+const getProduct = cache(async (slug: string): Promise<Product> => {
+  const res = await fetch(`${env.API_URL}/products/by_slug/${slug}`);
+  if (res.status === 404) notFound();
+  if (!res.ok) throw new Error(`Failed to load product: ${res.status}`);
+  return res.json();
+});
+const StoreName = "نانوشاپ";
+
+export async function generateStaticParams() {
+  const res = await fetch(`${env.API_URL}/products`);
+  if (!res.ok) return [];
+  const products: { slug: string }[] = await res.json();
+  return products.map((p) => ({ slug: p.slug }));
+}
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProduct(slug);
+
+  return {
+    title: `${product.name} |${StoreName} `,
+    description:
+      product.description?.slice(0, 160) ??
+      `فروش ${product.name} ٔدر ${StoreName}`,
+    alternates: {
+      canonical: `/product/${slug}`,
+    },
+    openGraph: {
+      title: product.name,
+      description: `فروش ${product.name} در ${StoreName}`,
+      images: [{ url: `${env.BASE_URL}/${product.imageUrl}` }],
+      type: "website",
+      siteName: StoreName,
+      locale: "fa_IR",
+    },
+  };
+}
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
-  const productRes = await fetch(`${env.API_URL}/products/by_slug/${slug}`);
-  const product: Product = await productRes.json();
+  const product = await getProduct(slug);
+
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: product.name,
+      description: stripHtml(product.description).slice(0, 300),
+      image: [`${env.BASE_URL}/${product.imageUrl}`],
+      url: `${siteUrl}/products/${slug}`,
+      brand: { "@type": "Brand", name: StoreName },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "خانه", item: siteUrl },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "محصولات",
+          item: `${siteUrl}/products`,
+        },
+        { "@type": "ListItem", position: 3, name: product.name },
+      ],
+    },
+  ];
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Box
         sx={{
           borderColor: "grey.200",
@@ -41,6 +128,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               }}
               sizes="(max-width: 900px) 100vw, 33vw"
               fill
+              priority
               alt={product.name}
               src={`${env.BASE_URL}/${product.imageUrl}`}
             />
@@ -56,6 +144,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
             }}
           >
             <Typography
+              component="h1"
               variant="h3"
               sx={{ fontSize: "1.5rem", fontWeight: "bold" }}
             >
