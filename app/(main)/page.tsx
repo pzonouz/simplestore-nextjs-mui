@@ -4,7 +4,9 @@ import { Carousel } from "@/components/UI/Carousel";
 import { env } from "@/lib/env";
 
 export default async function Home() {
-  const productsRes = await fetch(`${env.API_URL}/products`);
+  const productsRes = await fetch(`${env.API_URL}/products`, {
+    cache: "no-store",
+  });
   const products = await productsRes.json();
   return (
     <>
