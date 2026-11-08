@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardActionArea,
   CardActions,
@@ -16,25 +15,31 @@ export const ProductCard = ({ product }: { product: Product }) => {
     ? `${env.NEXT_PUBLIC_BASE_URL}/${product.imageUrl}`
     : "/images/pc.png";
   return (
-    <Card sx={{ width: 1 }}>
+    <Card
+      sx={{
+        width: 1,
+        borderWidth: "2px",
+        borderColor: "grey.200",
+        borderRadius: "8px",
+      }}
+    >
       <Link href={`/product/${product?.slug}`}>
         <CardActionArea>
-          <CardMedia
-            component="img"
-            height={140}
-            image={imageSrc}
-            alt={product.name}
-          />
+          <CardMedia component="img" image={imageSrc} alt={product.name} />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography noWrap gutterBottom variant="h5" component="div">
               {product.name}
             </Typography>
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary">
-            Share
-          </Button>
+          {product?.price ? (
+            product.price
+          ) : (
+            <Typography sx={{ fontWeight: 700 }}>
+              برای قیمت تماس بگیرید
+            </Typography>
+          )}
         </CardActions>
       </Link>
     </Card>

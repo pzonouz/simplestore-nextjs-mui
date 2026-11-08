@@ -9,6 +9,7 @@ import "./page.css";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import { Contact } from "@/components/UI/Contact";
 
 const siteUrl = env.BASE_URL;
 const stripHtml = (html = "") =>
@@ -126,7 +127,6 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
                 borderRadius: "1rem",
                 aspectRatio: 1,
               }}
-              sizes="(max-width: 900px) 100vw, 33vw"
               fill
               priority
               alt={product.name}
@@ -163,12 +163,10 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               flex: 1,
             }}
           >
-            <Typography sx={{ fontSize: "1.2rem" }}>
+            <Typography sx={{ fontSize: "1.2rem", fontWeight: 700 }}>
               برای قیمت تماس بگیرید
             </Typography>
-            <Typography sx={{ alignSelf: "end", fontWeight: "bold" }}>
-              09040427153
-            </Typography>
+            <Contact />
           </Box>
         </Box>
       </Box>

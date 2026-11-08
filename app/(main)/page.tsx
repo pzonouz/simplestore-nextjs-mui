@@ -14,7 +14,7 @@ export default async function Home() {
         sx={{
           position: "relative",
           width: "100%",
-          height: "350px",
+          aspectRatio: "3/1",
           display: {
             xs: "none",
             md: "block",
@@ -25,6 +25,7 @@ export default async function Home() {
           src={"/images/Hero3.webp"}
           alt="hero pic"
           fill
+          priority
           style={{ objectFit: "cover" }}
         />
       </Box>

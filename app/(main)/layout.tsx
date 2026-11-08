@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MainMenubar } from "@/components/UI/MainMenu/MainMenu";
 import type { MenuItemType } from "@/lib/types";
+import Footer from "@/components/UI/Footer";
 
 export const mainMenuItems: MenuItemType[] = [
   { title: "خانه", href: "/" },
@@ -53,6 +54,7 @@ export default function MainLayout({
         <MainMenubar items={mainMenuItems} />
       </Box>
       {children}
+      <Footer />
     </Box>
   );
 }

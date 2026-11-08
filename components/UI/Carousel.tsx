@@ -20,11 +20,6 @@ export const Carousel = ({ items }: { items: Product[] }) => {
       spaceBetween={50}
       breakpoints={{ 0: { slidesPerView: 1 }, 768: { slidesPerView: 3 } }}
       loop
-      autoplay={{
-        delay: 3000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true,
-      }}
       navigation
       pagination={{ clickable: true }}
       onSwiper={(swiper) => console.log(swiper)}
