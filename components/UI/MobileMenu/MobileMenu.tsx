@@ -1,6 +1,6 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import { Box, IconButton } from "@mui/material";
-import type { MenuItemType } from "../../lib/types.ts";
+import type { MenuItemType } from "../../../lib/types.ts";
 import {
   Menubar,
   MenuPopup,

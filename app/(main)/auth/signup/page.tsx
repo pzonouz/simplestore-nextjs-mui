@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import { SignInForm } from "./SinginForm";
+import { SignUpForm } from "./SignupForm";
 
 const page = () => {
   return (
     <Suspense fallback={null}>
-      <SignInForm />
+      <SignUpForm />
     </Suspense>
   );
 };

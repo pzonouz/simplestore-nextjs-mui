@@ -11,6 +11,7 @@ export const SnackBar = () => {
   const text = useAppSelector((state) => state.snackbar.text);
   return (
     <Snackbar
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
       open={open}
       autoHideDuration={6000}
       onClose={() => {

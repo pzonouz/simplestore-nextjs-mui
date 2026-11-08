@@ -12,7 +12,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import type { MenuItemType } from "@/lib/types";
-import MobileMenu from "./MobileMenu";
+import MobileMenu from "./MobileMenu/MobileMenu";
 
 const AdminMenu: MenuItemType[] = [
   { title: "خانه", href: "/admin" },

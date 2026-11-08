@@ -21,12 +21,14 @@ import {
 } from "@mui/material";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useRouter } from "next/navigation";
-import { useState, type ChangeEvent } from "react";
+import { type ChangeEvent, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 import { OpenReferesh } from "@/components/DATA/OpenReferesh";
 import { Tiptap } from "@/components/DATA/Tiptap";
 import { ImageManager } from "@/components/UI/ImageManager";
+import { ZoomOnHoverImage } from "@/components/UI/ZoomOnHoverImage";
+import { env } from "@/lib/env";
 import {
   api,
   useCreateProductMutation,
@@ -38,8 +40,6 @@ import { productCreateSchema } from "@/lib/schemas";
 import type { FileType, FormType, Product } from "@/lib/types";
 import { OpenErrorSnackbar, OpenSuccessSnackbar } from "@/lib/utils/snackbar";
 import { translateErrorToPersian } from "@/lib/utils/translate";
-import { ZoomOnHoverImage } from "@/components/UI/ZoomOnHoverImage";
-import { env } from "@/lib/env";
 
 export const ProductForm = ({
   type,
@@ -69,7 +69,8 @@ export const ProductForm = ({
       packingType: "Quantity" as const,
       packingCoefficientTypes: [],
       description: "",
-      imageurl: "",
+      imageUrl: "",
+      slug: "",
     },
   });
   const { data: categories, isLoading: getIsLoading } = useGetCategoriesQuery();
@@ -90,6 +91,9 @@ export const ProductForm = ({
         : selected?.filter((v: number) => v !== Number(value)),
     );
   };
+  useEffect(() => {
+    setValue("slug", watch("name").replaceAll(" ", "_"));
+  }, [watch("name"), setValue]);
   return (
     <Box
       onSubmit={handleSubmit((data) => {
@@ -133,6 +137,22 @@ export const ProductForm = ({
                   {...field}
                   sx={{ width: 1 }}
                   label="نام"
+                  variant="outlined"
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                />
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Controller
+              name="slug"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  sx={{ width: 1 }}
+                  label="مسیر"
                   variant="outlined"
                   error={!!fieldState.error}
                   helperText={fieldState.error?.message}
@@ -328,7 +348,7 @@ export const ProductForm = ({
           <Grid size={{ xs: 12, lg: 6 }}>
             <Controller
               control={control}
-              name="imageurl"
+              name="imageUrl"
               render={({ field, fieldState }) => (
                 <Box>
                   {field.value ? (
@@ -425,7 +445,7 @@ export const ProductForm = ({
       >
         <ImageManager
           onSelect={(file: FileType) => {
-            setValue("imageurl", file?.url, {
+            setValue("imageUrl", file?.url, {
               shouldDirty: true,
               shouldValidate: true,
             });

@@ -10,12 +10,12 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useRouter, useSearchParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
-import { useSigninMutation } from "@/lib/redux/api";
+import { useSignupMutation } from "@/lib/redux/api";
 import { useAppDispatch } from "@/lib/redux/hooks";
-import { signinSchema } from "@/lib/schemas";
+import { signupSchema } from "@/lib/schemas";
 import { OpenErrorSnackbar, OpenSuccessSnackbar } from "@/lib/utils/snackbar";
+import { translateErrorToPersian } from "@/lib/utils/translate";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -36,7 +36,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
   }),
 }));
 
-const SignInContainer = styled(Stack)(({ theme }) => ({
+const SignUpContainer = styled(Stack)(({ theme }) => ({
   height: "calc((1 - var(--template-frame-height, 0)) * 100dvh)",
   minHeight: "100%",
   padding: theme.spacing(2),
@@ -59,18 +59,16 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export const SignInForm = () => {
+export const SignUpForm = () => {
   const { handleSubmit, control } = useForm({
-    resolver: zodResolver(signinSchema),
+    resolver: zodResolver(signupSchema),
+    defaultValues: { email: "", password: "", password2: "" },
   });
 
-  const searchParams = useSearchParams();
-  const callback = searchParams.get("callback");
-  const router = useRouter();
-  const [signin, { isLoading }] = useSigninMutation();
+  const [signup, { isLoading }] = useSignupMutation();
   const dispatch = useAppDispatch();
   return (
-    <SignInContainer
+    <SignUpContainer
       direction="column"
       sx={{ justifyContent: "space-between" }}
     >
@@ -80,22 +78,18 @@ export const SignInForm = () => {
           variant="h4"
           sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
         >
-          ورود
+          ثبت نام
         </Typography>
         <Box
           component="form"
           onSubmit={handleSubmit((data) => {
-            signin(data)
+            signup(data)
               .unwrap()
               .then(() => {
-                OpenSuccessSnackbar(dispatch);
-                router.push(callback ?? "/profile");
+                OpenSuccessSnackbar(dispatch, "ایمیل فعالسازی ارسال شد");
               })
-              .catch(() => {
-                OpenErrorSnackbar(
-                  dispatch,
-                  "نام کابری و کلمه عبور مطابقت ندارد",
-                );
+              .catch((err) => {
+                OpenErrorSnackbar(dispatch, translateErrorToPersian(err));
               });
           })}
           sx={{
@@ -145,28 +139,48 @@ export const SignInForm = () => {
               </>
             )}
           />
+          <Controller
+            name="password2"
+            control={control}
+            render={({ field, fieldState }) => (
+              <>
+                <FormControl>
+                  <FormLabel htmlFor="password">تایید پسورد</FormLabel>
+                  <TextField
+                    {...field}
+                    type="password"
+                    autoFocus
+                    fullWidth
+                    variant="outlined"
+                    error={!!fieldState.error}
+                    helperText={fieldState?.error?.message}
+                  />
+                </FormControl>
+              </>
+            )}
+          />
           <Button
             loading={isLoading}
             type="submit"
             fullWidth
             variant="contained"
           >
-            ورود
+            ثبت
           </Button>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <Typography sx={{ textAlign: "center" }}>
-            حساب کاربری ندارید؟
+            حساب کاربری دارید؟
           </Typography>
           <Link
-            href="/admin/signup"
+            href="/auth/signup"
             variant="body2"
             sx={{ alignSelf: "center" }}
           >
-            ثبت نام
+            ورود
           </Link>
         </Box>
       </Card>
-    </SignInContainer>
+    </SignUpContainer>
   );
 };

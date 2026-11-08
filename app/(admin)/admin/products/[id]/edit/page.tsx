@@ -10,7 +10,7 @@ const page = () => {
   return (
     <Box>
       <Typography variant="h4" sx={{ textAlign: "center", paddingY: "2rem" }}>
-        ویرایش دسته بندی
+        ویرایش کالا
       </Typography>
       {product && (
         <ProductForm type="EDIT" product={product} externlLoading={isLoading} />

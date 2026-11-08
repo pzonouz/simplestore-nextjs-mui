@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { env } from "../env";
-import type { Category, FileType, Product, Signin } from "../types";
+import type { Category, FileType, Product, Signin, Signup } from "../types";
 
 ("../types.ts");
 
@@ -142,6 +142,15 @@ export const api = createApi({
         };
       },
     }),
+    signup: builder.mutation<void, Partial<Signup>>({
+      query(body) {
+        return {
+          url: `auth/register`,
+          method: "POST",
+          body: body,
+        };
+      },
+    }),
   }),
 });
 
@@ -163,4 +172,5 @@ export const {
   useEditProductMutation,
   useGetProductQuery,
   useSigninMutation,
+  useSignupMutation,
 } = api;

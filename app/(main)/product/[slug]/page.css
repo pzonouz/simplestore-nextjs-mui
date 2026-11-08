@@ -1,0 +1,5 @@
+#tiptap ul {
+  list-style: disc;
+  padding-right: 2rem;
+  line-height: 2rem;
+}

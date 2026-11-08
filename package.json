@@ -27,6 +27,7 @@
     "@tiptap/starter-kit": "^3.33.0",
     "clsx": "^2.1.1",
     "install": "^0.13.0",
+    "isomorphic-dompurify": "^4.7.0",
     "next": "16.4.5",
     "npm-check-updates": "^23.1.1",
     "react": "19.3.1",
@@ -37,6 +38,7 @@
     "react-redux": "^9.3.1",
     "sharp": "^0.35.5",
     "stylis": "^4.4.0",
+    "swiper": "^14.4.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {

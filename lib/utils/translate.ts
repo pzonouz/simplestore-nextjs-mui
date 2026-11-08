@@ -23,6 +23,13 @@ export const translateErrorToPersian = (err: FetchBaseQueryError): string => {
     ) {
       return "نام کالا تکراری است";
     }
+    if (
+      err?.data?.includes(
+        'duplicate key value violates unique constraint "email_unique" ',
+      )
+    ) {
+      return "ایمیل قبلا ثبت نام کرده است";
+    }
     return err?.data;
   }
   return "error";

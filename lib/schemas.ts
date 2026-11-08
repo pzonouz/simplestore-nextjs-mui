@@ -29,7 +29,8 @@ export const productCreateSchema = z.object({
   name: z.string({ error: NameError }).min(1, { error: NameError }),
   price: z.number(),
   count: z.number(),
-  imageurl: z.string().nullish(),
+  slug: z.string().nullish(),
+  imageUrl: z.string().nullish(),
   category: z
     .string({ error: "نام دسته بندی را وارد کنید" })
     .min(1, { error: "نام دسته بندی را وارد کنید" }),
@@ -60,14 +61,19 @@ export const signupSchema = z
       .string({ error: "ایمیل را وارد کنید" })
       .min(1, { error: "ایمیل را وارد کنید" })
       .pipe(z.email({ error: "ایمیل معتبر نیست" })),
-    papssword: z
+    password: z
       .string({ error: "پسورد را وارد کنید" })
       .min(1, { error: "پسورد را وارد کنید" }),
-    papssword2: z
+    password2: z
       .string({ error: "پسورد را وارد کنید" })
       .min(1, { error: "پسورد را وارد کنید" }),
   })
-  .superRefine((ctx, values) => {
-    console.log("ctx", ctx);
-    console.log("values", values);
+  .superRefine((_, ctx) => {
+    if (ctx.value.password !== ctx.value.password2) {
+      ctx.addIssue({
+        code: "custom",
+        message: "پسوردها مطابقت ندارد",
+        path: ["password2"],
+      });
+    }
   });
