@@ -1,6 +1,4 @@
 import { Box, Button, Typography } from "@mui/material";
-import BaleIcon from "../../public/images/bale.svg";
-import TelegramIcon from "../../public/images/telegram.svg";
 
 export const Contact = () => {
   return (
@@ -24,9 +22,9 @@ export const Contact = () => {
         component="a"
         href="https://ble.ir/nanochemshop" // Replace with your link
         target="_blank"
-        rel="noopener noreferrer"
       >
-        <BaleIcon sx={{ width: "100%", height: "100%" }} />
+        {/** biome-ignore lint/performance/noImgElement: "" */}
+        <img src="/images/bale.svg" alt="Bale" width={40} height={40} />
       </Box>
 
       <Button
@@ -41,9 +39,9 @@ export const Contact = () => {
         component="a"
         href="https://t.me/nanochemshop" // Replace with your link
         target="_blank"
-        rel="noopener noreferrer"
       >
-        <TelegramIcon sx={{ width: "100%", height: "100%" }} />
+        {/** biome-ignore lint/performance/noImgElement: "" */}
+        <img src="/images/telegram.svg" alt="Bale" width={40} height={40} />
       </Button>
 
       <Typography

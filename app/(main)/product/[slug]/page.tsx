@@ -21,8 +21,9 @@ const stripHtml = (html = "") =>
     .trim();
 
 const getProduct = cache(async (slug: string): Promise<Product> => {
+  const encodedSlug = encodeURIComponent(slug);
   const res = await fetch(
-    `${env.API_URL}/products/by_slug/${encodeURIComponent(slug)}`,
+    `${env.API_URL}/products/by_slug/${encodedSlug}`,
     { next: { revalidate: 3600 } }, // align fetch cache with page ISR
   );
   if (res.status === 404) notFound();
@@ -74,7 +75,8 @@ export async function generateMetadata({
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  const decoded = decodeURIComponent(slug);
+  const product = await getProduct(decoded);
 
   const jsonLd = [
     {
@@ -142,7 +144,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
                 aspectRatio: 1,
               }}
               alt={product.name}
-              src={`${env.BASE_URL}/uploads/${product.imageUrl}`}
+              src={`${env.BASE_URL}/${product.imageUrl}`}
             />
           </Box>
           <Box
