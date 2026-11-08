@@ -1,5 +1,5 @@
-export const revalidate = 3600; // regenerate at most once per hour
-export const dynamicParams = true; // new slugs are rendered on first request, then cached
+export const revalidate = 3600;
+export const dynamicParams = true;
 
 import { Box, Typography } from "@mui/material";
 import { env } from "@/lib/env";
@@ -11,26 +11,40 @@ import { cache } from "react";
 import { Contact } from "@/components/UI/Contact";
 
 const siteUrl = env.BASE_URL;
+const StoreName = "نانوشاپ";
+
 const stripHtml = (html = "") =>
   html
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+
 const getProduct = cache(async (slug: string): Promise<Product> => {
-  const res = await fetch(`${env.API_URL}/products/by_slug/${slug}`);
+  const res = await fetch(
+    `${env.API_URL}/products/by_slug/${encodeURIComponent(slug)}`,
+    { next: { revalidate: 3600 } }, // align fetch cache with page ISR
+  );
   if (res.status === 404) notFound();
   if (!res.ok) throw new Error(`Failed to load product: ${res.status}`);
   return res.json();
 });
-const StoreName = "نانوشاپ";
 
 export async function generateStaticParams() {
   const res = await fetch(`${env.API_URL}/products`);
   if (!res.ok) return [];
   const products: { slug: string }[] = await res.json();
-  return products.map((p) => ({ slug: p.slug }));
+
+  // Skip non-ASCII slugs — they crash Next.js prerendering.
+  // `dynamicParams = true` ensures they still render on demand.
+  return (
+    products
+      // biome-ignore lint/suspicious/noControlCharactersInRegex:""
+      .filter((p) => /^[\x00-\x7F]+$/.test(p.slug))
+      .map((p) => ({ slug: p.slug }))
+  );
 }
+
 export async function generateMetadata({
   params,
 }: {
@@ -40,17 +54,17 @@ export async function generateMetadata({
   const product = await getProduct(slug);
 
   return {
-    title: `${product.name} |${StoreName} `,
+    title: `${product.name} | ${StoreName}`,
     description:
       product.description?.slice(0, 160) ??
-      `فروش ${product.name} ٔدر ${StoreName}`,
+      `فروش ${product.name} در ${StoreName}`,
     alternates: {
-      canonical: `/product/${slug}`,
+      canonical: `/product/${encodeURIComponent(slug)}`,
     },
     openGraph: {
       title: product.name,
       description: `فروش ${product.name} در ${StoreName}`,
-      images: [{ url: `${env.BASE_URL}/${product.imageUrl}` }],
+      images: [{ url: `${env.BASE_URL}/uploads/${product.imageUrl}` }],
       type: "website",
       siteName: StoreName,
       locale: "fa_IR",
@@ -68,8 +82,8 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
       "@type": "Product",
       name: product.name,
       description: stripHtml(product.description).slice(0, 300),
-      image: [`${env.BASE_URL}/${product.imageUrl}`],
-      url: `${siteUrl}/products/${slug}`,
+      image: [`${env.BASE_URL}/uploads/${product.imageUrl}`],
+      url: `${siteUrl}/product/${encodeURIComponent(slug)}`,
       brand: { "@type": "Brand", name: StoreName },
     },
     {
@@ -119,7 +133,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               aspectRatio: 4 / 3,
             }}
           >
-            {/** biome-ignore lint/performance/noImgElement: "" */}
+            {/* biome-ignore lint/performance/noImgElement: "" */}
             <img
               style={{
                 borderColor: "#EEE",
@@ -128,7 +142,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
                 aspectRatio: 1,
               }}
               alt={product.name}
-              src={`${env.BASE_URL}/${product.imageUrl}`}
+              src={`${env.BASE_URL}/uploads/${product.imageUrl}`}
             />
           </Box>
           <Box
@@ -175,7 +189,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
         dangerouslySetInnerHTML={{
           __html: product.description,
         }}
-      ></Box>
+      />
     </>
   );
 };
