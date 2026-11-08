@@ -20,7 +20,7 @@ export default async function Home() {
         }}
       >
         <Image
-          src={"/images/home-slider-min.png"}
+          src={"/images/Hero3.webp"}
           alt="hero pic"
           fill
           style={{ objectFit: "cover" }}
