@@ -16,7 +16,7 @@ export const RecursiveMainMenu = ({ item }: { item: MenuItemType }) => {
       <MenuSubmenuRoot>
         <MenuSubmenuTrigger>{item.title}</MenuSubmenuTrigger>
         <MenuPortal>
-          <MenuPositioner alignOffset={-4}>
+          <MenuPositioner side="left" alignOffset={-4}>
             <MenuPopup>
               {item.children?.map((child) => (
                 <RecursiveMainMenu key={child.title} item={child} />

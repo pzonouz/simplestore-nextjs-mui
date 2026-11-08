@@ -93,7 +93,7 @@ export const ProductForm = ({
   };
   useEffect(() => {
     setValue("slug", watch("name").replaceAll(" ", "_"));
-  }, [watch("name"), setValue]);
+  }, [setValue, watch]);
   return (
     <Box
       onSubmit={handleSubmit((data) => {

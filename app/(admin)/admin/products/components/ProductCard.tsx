@@ -16,8 +16,8 @@ export const ProductCard = ({ product }: { product: Product }) => {
     ? `${env.NEXT_PUBLIC_BASE_URL}/${product.imageUrl}`
     : "/images/pc.png";
   return (
-    <Link href={`/product/${product?.slug}`}>
-      <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width: 1 }}>
+      <Link href={`/product/${product?.slug}`}>
         <CardActionArea>
           <CardMedia
             component="img"
@@ -36,7 +36,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
             Share
           </Button>
         </CardActions>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 };

@@ -56,14 +56,14 @@ const StyledItemButton = styled(ListItemButton)(({ theme }) => {
   return {
     color: primary.main,
     "& .MuiListItemIcon-root, & .MuiListItemText-secondary, & .MuiTypography-root":
-      {
-        color: "inherit",
-      },
+    {
+      color: "inherit",
+    },
     "&:hover, &:active, &.Mui-focusVisible, &[data-highlighted], &[data-popup-open]":
-      {
-        backgroundColor: primary.main,
-        color: primary.contrastText,
-      },
+    {
+      backgroundColor: primary.main,
+      color: primary.contrastText,
+    },
   };
 }) as typeof ListItemButton;
 
@@ -79,7 +79,7 @@ const StyledTrigger = styled(Button)(({ theme }) => {
     transition: "none",
     textTransform: "capitalize",
     letterSpacing: 0,
-    fontSize: "1.2rem",
+    fontSize: "1rem",
     "&:hover, &:active, &[data-popup-open], &.Mui-focusVisible": {
       backgroundColor: primary.main,
       color: primary.contrastText,

@@ -23,7 +23,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Box sx={{ paddingX: { xs: "1rem", md: "6rem" } }}>
+    <Box sx={{ paddingX: { xs: "1rem", md: "2rem" } }}>
       <Box>
         <Box
           sx={{

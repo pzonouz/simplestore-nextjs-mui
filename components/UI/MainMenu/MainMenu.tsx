@@ -1,5 +1,4 @@
 "use client";
-import { Typography } from "@mui/material";
 import type { MenuItemType } from "@/lib/types";
 import {
   Menubar,
