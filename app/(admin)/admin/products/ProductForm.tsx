@@ -35,7 +35,7 @@ import {
   useCreateProductMutation,
   useEditProductMutation,
   useGetCategoriesQuery,
-  useGetFilesQuery
+  useGetFilesQuery,
 } from "@/lib/redux/api";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { productCreateSchema } from "@/lib/schemas";
@@ -73,7 +73,7 @@ export const ProductForm = ({
       description: "",
       imageUrl: "",
       slug: "",
-      fileIds:[]
+      fileIds: [],
     },
   });
   const { data: categories, isLoading: getIsLoading } = useGetCategoriesQuery();
@@ -421,7 +421,7 @@ export const ProductForm = ({
                             height={64}
                             scale={5}
                             alt=""
-                            src={`${env.NEXT_PUBLIC_BASE_URL}/${file.url}`}
+                            src={`${env.NEXT_PUBLIC_BASE_URL}/${file?.url}`}
                           />
                           <Button
                             variant="outlined"
@@ -433,7 +433,10 @@ export const ProductForm = ({
                             variant="outlined"
                             color="error"
                             onClick={() =>
-                                setValue("fileIds",getValues("fileIds").filter(f=>f!==v))
+                              setValue(
+                                "fileIds",
+                                getValues("fileIds").filter((f) => f !== v),
+                              )
                             }
                           >
                             حذف تصویر
@@ -446,7 +449,7 @@ export const ProductForm = ({
                       onClick={() => setImagesSelectOpen(true)}
                       variant="contained"
                     >
-                          افزودن تصاویر
+                      افزودن تصاویر
                     </Button>
                   )}
                   {fieldState.error && (

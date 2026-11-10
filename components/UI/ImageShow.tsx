@@ -1,8 +1,10 @@
 "use client";
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { env } from "@/lib/env";
 import type { FileType } from "@/lib/types";
+
+type Thumb = Pick<FileType, "id" | "name" | "url">;
 
 export const ImageShow = ({
   mainImageUrl,
@@ -13,16 +15,21 @@ export const ImageShow = ({
   mainImageName: string;
   images: FileType[];
 }) => {
-  const allImages = [...images, { name: mainImageName, url: mainImageUrl }];
-  const [showingImage, setShowingImage] = useState<{
-    name: string;
-    url: string;
-    id: string;
-  }>({ name: mainImageName, url: mainImageUrl, id: "1" });
+  const mainImage = useMemo<Thumb>(
+    () => ({ id: "main", name: mainImageName, url: mainImageUrl }),
+    [mainImageName, mainImageUrl],
+  );
+
+  const allImages = useMemo<Thumb[]>(
+    () => [...images, mainImage],
+    [images, mainImage],
+  );
+
+  const [showingImage, setShowingImage] = useState<Thumb>(mainImage);
 
   return (
     <div>
-      {/** biome-ignore lint/performance/noImgElement: "" */}
+      {/* biome-ignore lint/performance/noImgElement: hero image, fixed dimensions */}
       <img
         style={{
           borderColor: "#EEE",
@@ -37,13 +44,11 @@ export const ImageShow = ({
         {allImages
           .filter((i) => i.url !== showingImage.url)
           .map((f) => (
-            // biome-ignore lint/performance/noImgElement: ""
-            // biome-ignore lint/a11y/useKeyWithClickEvents: ""
             <img
               key={f.id}
-              onClick={() =>
-                setShowingImage({ name: f.name, url: f.url, id: f.id })
-              }
+              // biome-ignore lint/a11y/useKeyWithClickEvents: thumbnail gallery
+              // biome-ignore lint/performance/noImgElement: thumbnail, fixed size
+              onClick={() => setShowingImage(f)}
               style={{
                 maxWidth: "6rem",
                 borderColor: "#EEE",
