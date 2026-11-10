@@ -27,6 +27,7 @@ import { NumericFormat } from "react-number-format";
 import { OpenReferesh } from "@/components/DATA/OpenReferesh";
 import { Tiptap } from "@/components/DATA/Tiptap";
 import { ImageManager } from "@/components/UI/ImageManager";
+import { MultipleImageManager } from "@/components/UI/MultipleImageManager";
 import { ZoomOnHoverImage } from "@/components/UI/ZoomOnHoverImage";
 import { env } from "@/lib/env";
 import {
@@ -34,6 +35,7 @@ import {
   useCreateProductMutation,
   useEditProductMutation,
   useGetCategoriesQuery,
+  useGetFilesQuery
 } from "@/lib/redux/api";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { productCreateSchema } from "@/lib/schemas";
@@ -71,6 +73,7 @@ export const ProductForm = ({
       description: "",
       imageUrl: "",
       slug: "",
+      fileIds:[]
     },
   });
   const { data: categories, isLoading: getIsLoading } = useGetCategoriesQuery();
@@ -79,7 +82,9 @@ export const ProductForm = ({
     useCreateProductMutation();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { data: files } = useGetFilesQuery();
   const [imageSelectOpen, setImageSelectOpen] = useState(false);
+  const [imagesSelectOpen, setImagesSelectOpen] = useState(false);
   const checkboxOnChange = (e: ChangeEvent<HTMLInputElement, Element>) => {
     const value = e.currentTarget?.value;
     const checked = e.currentTarget?.checked;
@@ -397,6 +402,62 @@ export const ProductForm = ({
               )}
             />
           </Grid>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Controller
+              control={control}
+              name="fileIds"
+              render={({ field, fieldState }) => (
+                <Box>
+                  {field.value?.length > 0 ? (
+                    field.value?.map((v) => {
+                      const file = files?.find((f) => f.id === v);
+                      return (
+                        <Box
+                          key={file?.id}
+                          sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                        >
+                          <ZoomOnHoverImage
+                            width={64}
+                            height={64}
+                            scale={5}
+                            alt=""
+                            src={`${env.NEXT_PUBLIC_BASE_URL}/${file.url}`}
+                          />
+                          <Button
+                            variant="outlined"
+                            onClick={() => setImagesSelectOpen(true)}
+                          >
+                            تغییر تصویر
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            onClick={() =>
+                                setValue("fileIds",getValues("fileIds").filter(f=>f!==v))
+                            }
+                          >
+                            حذف تصویر
+                          </Button>
+                        </Box>
+                      );
+                    })
+                  ) : (
+                    <Button
+                      onClick={() => setImagesSelectOpen(true)}
+                      variant="contained"
+                    >
+                          افزودن تصاویر
+                    </Button>
+                  )}
+                  {fieldState.error && (
+                    <FormHelperText error>
+                      {fieldState.error.message}
+                    </FormHelperText>
+                  )}
+                </Box>
+              )}
+            />
+          </Grid>
 
           <Grid size={{ xs: 12, lg: 12 }}>
             <Controller
@@ -451,6 +512,23 @@ export const ProductForm = ({
               shouldValidate: true,
             });
             setImageSelectOpen(false);
+          }}
+        />
+      </Dialog>
+      <Dialog
+        open={imagesSelectOpen}
+        onClose={() => setImagesSelectOpen(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <MultipleImageManager
+          fileIds={getValues("fileIds")}
+          onChange={(fileIds: string[]) => {
+            setValue("fileIds", fileIds, {
+              shouldDirty: true,
+              shouldValidate: true,
+            });
+            setImagesSelectOpen(false);
           }}
         />
       </Dialog>

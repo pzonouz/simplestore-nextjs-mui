@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
-import { Carousel } from "@/components/UI/Carousel";
 import { env } from "@/lib/env";
+import { ProductCarousel } from "@/components/UI/ProductsCarousel";
 
 export default async function Home() {
   const productsRes = await fetch(`${env.API_URL}/products`, {
@@ -42,7 +42,9 @@ export default async function Home() {
         >
           جدیدترین محصولات
         </Typography>
-        <Carousel items={products} />
+        <Box sx={{ padding: "2rem" }}>
+          <ProductCarousel items={products} />
+        </Box>
       </Box>
     </>
   );

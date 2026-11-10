@@ -3,12 +3,18 @@ export const dynamicParams = true;
 
 import { Box, Typography } from "@mui/material";
 import { env } from "@/lib/env";
-import type { Product } from "@/lib/types";
+import type { FileType, Product } from "@/lib/types";
 import "./page.css";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { Contact } from "@/components/UI/Contact";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+import { ImageShow } from "@/components/UI/ImageShow";
+import { ImagesCarousel } from "@/components/UI/ImagesCarousel";
 
 const siteUrl = env.BASE_URL;
 const StoreName = "نانوشاپ";
@@ -103,7 +109,12 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
       ],
     },
   ];
+  const filesRes = await fetch(`${env.API_URL}/files`, { cache: "no-store" });
+  const files = await filesRes.json();
 
+  const images = files?.filter((f: FileType) =>
+    product?.fileIds?.includes(f.id),
+  );
   return (
     <>
       <script
@@ -131,21 +142,19 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
           <Box
             sx={{
               position: "relative",
-              minWidth: "33%",
+              width: "33%",
               aspectRatio: 4 / 3,
+              display: { xs: "none", md: "block" },
             }}
           >
-            {/* biome-ignore lint/performance/noImgElement: "" */}
-            <img
-              style={{
-                borderColor: "#EEE",
-                borderWidth: "1px",
-                borderRadius: "1rem",
-                aspectRatio: 1,
-              }}
-              alt={product.name}
-              src={`${env.BASE_URL}/${product.imageUrl}`}
+            <ImageShow
+              images={images}
+              mainImageUrl={product.imageUrl ?? ""}
+              mainImageName={product?.name ?? ""}
             />
+          </Box>
+          <Box sx={{ display: { xs: "block", md: "none" } }}>
+            <ImagesCarousel images={images} />
           </Box>
           <Box
             sx={{
@@ -154,7 +163,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               borderWidth: "1px",
               padding: "1rem",
               borderRadius: "1rem",
-              minWidth: "33%",
+              width: { xs: 1, md: "33%" },
             }}
           >
             <Typography

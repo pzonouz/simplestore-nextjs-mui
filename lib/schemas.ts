@@ -31,6 +31,7 @@ export const productCreateSchema = z.object({
   count: z.number(),
   slug: z.string().nullish(),
   imageUrl: z.string().nullish(),
+  fileIds: z.array(z.string()),
   category: z
     .string({ error: "نام دسته بندی را وارد کنید" })
     .min(1, { error: "نام دسته بندی را وارد کنید" }),
