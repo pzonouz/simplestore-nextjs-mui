@@ -12,7 +12,6 @@ export const ImagesCarousel = ({
   mainImageName,
 }: {
   images: FileType[];
-
   mainImageUrl: string;
   mainImageName: string;
 }) => {
@@ -33,7 +32,7 @@ export const ImagesCarousel = ({
       spaceBetween={50}
       breakpoints={{
         0: { slidesPerView: 1 },
-        768: { slidesPerView: 3 },
+        900: { slidesPerView: 3 },
       }}
       loop
       navigation

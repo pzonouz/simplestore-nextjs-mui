@@ -163,7 +163,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               mainImageName={product?.name ?? ""}
             />
           </Box>
-          <Box sx={{ display: { xs: "block", md: "none" } }}>
+          <Box sx={{ display: { xs: "block", lg: "none" } }}>
             <ImagesCarousel
               images={images}
               mainImageUrl={product.imageUrl ?? ""}
