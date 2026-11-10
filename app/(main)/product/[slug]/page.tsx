@@ -68,6 +68,16 @@ export async function generateMetadata({
     alternates: {
       canonical: `/product/${encodeURIComponent(slug)}`,
     },
+    keywords: [
+      product.name,
+      `${product.name} ${StoreName}`,
+      `خرید ${product.name}`,
+      `قیمت ${product.name}`,
+      `${product.categoryName}`, // if you have it
+      StoreName,
+      "اردبیل",
+      "تبریز",
+    ].filter(Boolean),
     openGraph: {
       title: product.name,
       description: `فروش ${product.name} در ${StoreName}`,
