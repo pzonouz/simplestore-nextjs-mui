@@ -1,10 +1,30 @@
 "use client";
+import { useMemo } from "react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { env } from "@/lib/env";
 import type { FileType } from "@/lib/types";
+import type { Thumb } from "./ImageShow";
 
-export const ImagesCarousel = ({ images }: { images: FileType[] }) => {
+export const ImagesCarousel = ({
+  images,
+  mainImageUrl,
+  mainImageName,
+}: {
+  images: FileType[];
+
+  mainImageUrl: string;
+  mainImageName: string;
+}) => {
+  const mainImage = useMemo<Thumb>(
+    () => ({ id: "main", name: mainImageName, url: mainImageUrl }),
+    [mainImageName, mainImageUrl],
+  );
+
+  const allImages = useMemo<Thumb[]>(
+    () => [...images, mainImage],
+    [images, mainImage],
+  );
   return (
     <Swiper
       autoHeight
@@ -19,7 +39,7 @@ export const ImagesCarousel = ({ images }: { images: FileType[] }) => {
       navigation
       pagination={{ clickable: true }}
     >
-      {images?.map((item: FileType) => (
+      {allImages?.map((item) => (
         <SwiperSlide key={item?.id}>
           {/** biome-ignore lint/performance/noImgElement: "" */}
           <img

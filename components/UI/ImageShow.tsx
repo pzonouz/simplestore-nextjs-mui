@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { env } from "@/lib/env";
 import type { FileType } from "@/lib/types";
 
-type Thumb = Pick<FileType, "id" | "name" | "url">;
+export type Thumb = Pick<FileType, "id" | "name" | "url">;
 
 export const ImageShow = ({
   mainImageUrl,
@@ -44,6 +44,8 @@ export const ImageShow = ({
         {allImages
           .filter((i) => i.url !== showingImage.url)
           .map((f) => (
+            // biome-ignore lint/a11y/useKeyWithClickEvents: ""
+            // biome-ignore lint/performance/noImgElement: ""
             <img
               key={f.id}
               // biome-ignore lint/a11y/useKeyWithClickEvents: thumbnail gallery
