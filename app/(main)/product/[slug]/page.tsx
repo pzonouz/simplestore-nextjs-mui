@@ -71,7 +71,7 @@ export async function generateMetadata({
     openGraph: {
       title: product.name,
       description: `فروش ${product.name} در ${StoreName}`,
-      images: [{ url: `${env.BASE_URL}/uploads/${product.imageUrl}` }],
+      images: [{ url: `${env.BASE_URL}/${product.imageUrl}` }],
       type: "website",
       siteName: StoreName,
       locale: "fa_IR",
