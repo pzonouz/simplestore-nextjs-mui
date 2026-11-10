@@ -109,7 +109,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
       ],
     },
   ];
-  const filesRes = await fetch(`${env.API_URL}/files`, { cache: "no-store" });
+  const filesRes = await fetch(`${env.API_URL}/files`);
   const files = await filesRes.json();
 
   const images = files?.filter((f: FileType) =>
