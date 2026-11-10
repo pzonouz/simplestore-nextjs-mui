@@ -45,7 +45,7 @@ export default function Footer() {
                 <PhoneIcon fontSize="small" />
                 <Typography>تلفن:</Typography>
                 <Link
-                  href="tel:00984533740531"
+                  href="tel:09040427153"
                   color="inherit"
                   underline="hover"
                   dir="ltr"

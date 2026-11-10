@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
-import { env } from "@/lib/env";
 import { ProductCarousel } from "@/components/UI/ProductsCarousel";
+import { env } from "@/lib/env";
 
 export default async function Home() {
   const productsRes = await fetch(`${env.API_URL}/products`, {
