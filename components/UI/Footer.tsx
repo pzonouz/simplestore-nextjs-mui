@@ -51,7 +51,7 @@ export default function Footer() {
                   dir="ltr"
                   sx={{ fontWeight: 600 }}
                 >
-                  04533740531
+                  09040427153
                 </Link>
               </Stack>
 
