@@ -6,7 +6,8 @@ import { env } from "@/lib/env";
 
 export const metadata: Metadata = {
   title: "خانه",
-  description: "",
+  description:
+    "تولید مواد شیمیایی با کیفیت و آنالیز تخصصی مواد شیمیایی در آزمایشگاه مجهز. برای مشاوره و سفارش با ما تماس بگیرید.",
   alternates: {
     canonical: "/",
   },
@@ -27,13 +28,6 @@ export const metadata: Metadata = {
     locale: "fa_IR",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "خانه",
-    description: "جدیدترین محصولات فروشگاه را ببینید.",
-    images: ["/images/og-home.webp"],
-  },
-  // ... your title, description, OG, etc.
 };
 
 export default async function Home() {
