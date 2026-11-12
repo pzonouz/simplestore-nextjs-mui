@@ -5,11 +5,14 @@ import { ThemeProvider } from "@mui/material/styles";
 import { MyCachProvider } from "@/components/Providers/CacheProvider";
 import StoreProvider from "@/components/Providers/StoreProvider";
 import { SnackBar } from "@/components/UI/SnackBar";
+import { env } from "@/lib/env";
 import { iransansx } from "@/lib/font";
 import { theme } from "./theme";
 export const metadata: Metadata = {
   title: "نانوشاپ",
-  description: "تولید فروش توزیع مواد شیمیایی و نانو",
+  description:
+    "تولید مواد شیمیایی با کیفیت و آنالیز تخصصی مواد شیمیایی در آزمایشگاه مجهز. برای مشاوره و سفارش با ما تماس بگیرید.",
+  metadataBase: new URL(env.BASE_URL),
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

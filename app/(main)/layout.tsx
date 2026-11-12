@@ -36,7 +36,7 @@ export default function MainLayout({
         >
           <Link href="/">
             {/** biome-ignore lint/performance/noImgElement: "" */}
-            <img src="/images/logo.jpg" alt="logo" width={70} height={70} />
+            <img src="/images/logo.png" alt="logo" width={70} height={70} />
           </Link>
           <TextField
             slotProps={{
