@@ -67,7 +67,7 @@ export const Search = () => {
             top: "calc(100% + 8px)",
             left: 0,
             width: 1, // 100% of wrapper = same width as TextField
-            zIndex: 1,
+            zIndex: 50,
             backgroundColor: "white",
             padding: "1rem",
             display: "flex",
