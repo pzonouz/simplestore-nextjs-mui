@@ -140,6 +140,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
           borderWidth: "1px",
           borderRadius: "1rem",
           padding: "1rem",
+          marginTop: "1rem",
         }}
       >
         <Box
