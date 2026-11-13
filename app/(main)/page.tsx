@@ -5,7 +5,7 @@ import { ProductCarousel } from "@/components/UI/ProductsCarousel";
 import { env } from "@/lib/env";
 
 export const metadata: Metadata = {
-  title: "خانه",
+  title: { absolute: "خانه | نانوشاپ" },
   description:
     "تولید مواد شیمیایی با کیفیت و آنالیز تخصصی مواد شیمیایی در آزمایشگاه مجهز. برای مشاوره و سفارش با ما تماس بگیرید.",
   alternates: {
@@ -41,11 +41,12 @@ export default async function Home() {
         sx={{
           position: "relative",
           width: "100%",
-          aspectRatio: "3/1",
-          display: {
-            xs: "none",
-            md: "block",
-          },
+          marginY: { md: "0", xs: "1rem" },
+          aspectRatio: { xs: "2/1", md: "3/1" },
+          // display: {
+          //   xs: "none",
+          //   md: "block",
+          // },
         }}
       >
         <Image

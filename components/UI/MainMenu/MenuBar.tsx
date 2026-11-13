@@ -26,7 +26,7 @@ import type * as React from "react";
 
 const StyledMenubar = styled("div")(({ theme }) => ({
   display: "flex",
-  width: "fit-content",
+  width: "full",
   gap: "1px",
   margin: "1rem 0",
   padding: theme.spacing(1),
@@ -56,14 +56,14 @@ const StyledItemButton = styled(ListItemButton)(({ theme }) => {
   return {
     color: primary.main,
     "& .MuiListItemIcon-root, & .MuiListItemText-secondary, & .MuiTypography-root":
-    {
-      color: "inherit",
-    },
+      {
+        color: "inherit",
+      },
     "&:hover, &:active, &.Mui-focusVisible, &[data-highlighted], &[data-popup-open]":
-    {
-      backgroundColor: primary.main,
-      color: primary.contrastText,
-    },
+      {
+        backgroundColor: primary.main,
+        color: primary.contrastText,
+      },
   };
 }) as typeof ListItemButton;
 
@@ -72,7 +72,8 @@ const StyledItemButton = styled(ListItemButton)(({ theme }) => {
 const StyledTrigger = styled(Button)(({ theme }) => {
   const { primary } = (theme.vars || theme).palette;
   return {
-    paddingInline: theme.spacing(2),
+    // paddingInline: theme.spacing(2),
+    padding: "12px",
     backgroundColor: "transparent",
     color: primary.main,
     fontWeight: 500,

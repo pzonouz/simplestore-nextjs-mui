@@ -1,4 +1,5 @@
 "use client";
+import { Box } from "@mui/material";
 import type { MenuItemType } from "@/lib/types";
 import {
   Menubar,
@@ -34,6 +35,11 @@ export function MainMenubar({ items }: { items: MenuItemType[] }) {
           </MenubarLink>
         ),
       )}
+      <Box sx={{ marginInlineStart: "auto" }}>
+        <MenubarLink key={"guide"} href={"/faq"}>
+          راهنما
+        </MenubarLink>
+      </Box>
     </Menubar>
   );
 }

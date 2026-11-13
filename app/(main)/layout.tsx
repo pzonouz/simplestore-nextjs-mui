@@ -1,8 +1,9 @@
-import SearchIcon from "@mui/icons-material/Search";
-import { Box, InputAdornment, TextField } from "@mui/material";
-import Link from "next/link";
+import { Box } from "@mui/material";
+import type { Metadata } from "next";
 import Footer from "@/components/UI/Footer";
 import { MainMenubar } from "@/components/UI/MainMenu/MainMenu";
+import MobileMenu from "@/components/UI/MobileMenu/MobileMenu";
+import { TopBar } from "@/components/UI/TopBar";
 import type { MenuItemType } from "@/lib/types";
 
 export const mainMenuItems: MenuItemType[] = [
@@ -17,41 +18,36 @@ export const mainMenuItems: MenuItemType[] = [
     ],
   },
 ];
+
+export const metadata: Metadata = {
+  title: {
+    default: "نانوشاپ", // Required: Fallback title
+    template: "%s | نانوشاپ", // Pattern for child pages
+  },
+};
 export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <Box sx={{ paddingX: { xs: "1rem", md: "2rem" } }}>
-      <Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: "4px",
-            height: 100,
-          }}
-        >
-          <Link href="/">
-            {/** biome-ignore lint/performance/noImgElement: "" */}
-            <img src="/images/logo.png" alt="logo" width={70} height={70} />
-          </Link>
-          <TextField
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              },
-            }}
-            variant="outlined"
-          />
+    <Box sx={{ paddingX: { xs: "1rem", md: "1rem" } }}>
+      <Box sx={{ paddingX: { xs: "0", md: "6rem" } }}>
+        <TopBar />
+        <Box sx={{ display: { xs: "none", md: "block" } }}>
+          <MainMenubar items={mainMenuItems} />
         </Box>
-        <MainMenubar items={mainMenuItems} />
+      </Box>
+      <Box
+        sx={{
+          display: { xs: "block", md: "none" },
+          position: "fixed",
+          top: "1rem",
+          left: "1rem",
+          width: "100%",
+        }}
+      >
+        <MobileMenu items={mainMenuItems} />
       </Box>
       {children}
       <Footer />

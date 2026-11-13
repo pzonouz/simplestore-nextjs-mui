@@ -61,7 +61,7 @@ export async function generateMetadata({
   const product = await getProduct(slug);
 
   return {
-    title: `${product.name} | ${StoreName}`,
+    title: `${product.name}`,
     description:
       product.description?.slice(0, 160) ??
       `فروش ${product.name} در ${StoreName}`,
@@ -154,7 +154,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               position: "relative",
               width: "33%",
               aspectRatio: 4 / 3,
-              display: { xs: "none", md: "block" },
+              display: { xs: "none", sm: "block" },
             }}
           >
             <ImageShow
@@ -163,7 +163,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               mainImageName={product?.name ?? ""}
             />
           </Box>
-          <Box sx={{ display: { xs: "block", lg: "none" } }}>
+          <Box sx={{ display: { xs: "block", sm: "none" } }}>
             <ImagesCarousel
               images={images}
               mainImageUrl={product.imageUrl ?? ""}

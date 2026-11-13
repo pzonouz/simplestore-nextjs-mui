@@ -1,8 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { env } from "../env";
-import type { Category, FileType, Product, Signin, Signup } from "../types";
-
-("../types.ts");
+import type {
+  Category,
+  FileType,
+  Product,
+  productSearchResult,
+  Signin,
+  Signup,
+} from "../types";
 
 export const api = createApi({
   reducerPath: "api",
@@ -133,6 +138,10 @@ export const api = createApi({
       },
       invalidatesTags: ["products"],
     }),
+    searchProducts: builder.query<productSearchResult[], string>({
+      query: (search) => `/search?q=${search}`,
+      providesTags: ["products"],
+    }),
     signin: builder.mutation<void, Partial<Signin>>({
       query(body) {
         return {
@@ -171,6 +180,7 @@ export const {
   useDeleteProductMutation,
   useEditProductMutation,
   useGetProductQuery,
+  useSearchProductsQuery,
   useSigninMutation,
   useSignupMutation,
 } = api;

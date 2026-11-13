@@ -21,3 +21,7 @@ export type Signin = z.infer<typeof signinSchema>;
 export type Signup = z.infer<typeof signupSchema>;
 
 export type FormType = "CREATE" | "EDIT";
+
+export type productSearchResult = {
+  _source: { id: string; name: string; image_url: string; slug: string };
+};

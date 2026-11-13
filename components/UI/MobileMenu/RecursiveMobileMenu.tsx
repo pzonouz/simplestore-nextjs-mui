@@ -13,7 +13,7 @@ export const RecursiveMobileMenu = ({ item }: { item: MenuItemType }) => {
   if (hasChildren) {
     return (
       <MenuSubmenuRoot>
-        <MenuSubmenuTrigger>Share</MenuSubmenuTrigger>
+        <MenuSubmenuTrigger>{item?.title}</MenuSubmenuTrigger>
         <MenuPortal>
           <MenuPositioner alignOffset={-4}>
             <MenuPopup>

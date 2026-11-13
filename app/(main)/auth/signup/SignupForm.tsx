@@ -173,7 +173,7 @@ export const SignUpForm = () => {
             حساب کاربری دارید؟
           </Typography>
           <Link
-            href="/auth/signup"
+            href="/auth/signin"
             variant="body2"
             sx={{ alignSelf: "center" }}
           >
