@@ -16,7 +16,7 @@ import type { productSearchResult } from "@/lib/types";
 export const Search = () => {
   const [keyword, setKeyword] = useState<string>("");
   const { data, isLoading, isFetching } = useSearchProductsQuery(keyword, {
-    skip: !keyword,
+    skip: keyword.length < 3,
     refetchOnMountOrArgChange: true,
   });
 
@@ -33,6 +33,7 @@ export const Search = () => {
       }}
     >
       <TextField
+        placeholder="برای جستجو حداقل سه حرف وارد کنید"
         fullWidth
         value={keyword}
         onChange={(e) => setKeyword(e.currentTarget.value)}
@@ -60,7 +61,7 @@ export const Search = () => {
         }}
       />
 
-      {keyword && (
+      {keyword.length >= 3 && (
         <Box
           sx={{
             position: "absolute",
