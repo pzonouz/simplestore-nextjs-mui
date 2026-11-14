@@ -125,7 +125,7 @@ export const FileForm = ({
                 component="label"
                 variant="contained"
                 tabIndex={-1}
-                startIcon={<CloudUploadIcon />}
+                startIcon={<CloudUploadIcon width={32} height={32} />}
               >
                 آپلود
                 <VisuallyHiddenInput

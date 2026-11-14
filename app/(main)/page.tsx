@@ -30,50 +30,47 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home() {
-  const productsRes = await fetch(`${env.API_URL}/products`, {
-    cache: "no-store",
-  });
-  const products = await productsRes.json();
+export default function Home() {
   return (
     <>
       <Box
         sx={{
-          position: "relative",
+          position: "relative", // Required for fill
           width: "100%",
-          marginY: { md: "0", xs: "1rem" },
-          aspectRatio: { xs: "2/1", md: "3/1" },
-          // display: {
-          //   xs: "none",
-          //   md: "block",
-          // },
+          aspectRatio: { xs: "2 / 1", md: "3 / 1" }, // Reserves space
+          minHeight: { xs: "50vw", md: "33.33vw" }, // matches the ratio
         }}
       >
         <Image
-          src={"/images/Hero3.webp"}
+          src="/images/Hero3.webp"
           alt="hero pic"
-          fill
+          fill // Use fill instead of width/height
           priority
-          style={{ objectFit: "cover" }}
+          quality={70}
+          sizes="100vw"
+          style={{ objectFit: "cover" }} // Ensures the image covers the box
         />
       </Box>
-      <Box
-        sx={{
-          marginTop: { md: "8rem" },
-          height: "16rem",
-          backgroundColor: "primary.main",
-          padding: "1rem",
-        }}
-      >
-        <Typography
-          sx={{ color: "white", fontSize: "1.5rem", marginY: "1rem" }}
+      {/*<Box sx={{ minHeight: "40rem" }}>
+        <Box
+          sx={{
+            marginTop: { md: "8rem" },
+            height: "16rem",
+            backgroundColor: "primary.main",
+            padding: "1rem",
+          }}
         >
-          جدیدترین محصولات
-        </Typography>
-        <Box sx={{ padding: "2rem" }}>
-          <ProductCarousel items={products} />
+          <Typography
+            sx={{ color: "white", fontSize: "1.5rem", marginY: "1rem" }}
+          >
+            جدیدترین محصولات
+          </Typography>
+
+          <Box sx={{ padding: "2rem", minHeight: "300px" }}>
+            <ProductCarousel items={products} />
+          </Box>
         </Box>
-      </Box>
+    </Box >*/}
     </>
   );
 }

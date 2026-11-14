@@ -6,9 +6,9 @@ import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import FormatBulletListIcon from "@mui/icons-material/FormatListBulleted";
 import FormatUnderlineIcon from "@mui/icons-material/FormatUnderlined";
 import { Box, IconButton } from "@mui/material";
+import Underline from "@tiptap/extension-underline"; // remove if using StarterKit v3
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline"; // remove if using StarterKit v3
 import { clsx } from "clsx";
 import { useEffect } from "react";
 
@@ -73,25 +73,25 @@ export const Tiptap = ({
           sx={buttonSx(isBold)}
           onClick={() => editor.chain().focus().toggleBold().run()}
         >
-          <FormatBoldIcon />
+          <FormatBoldIcon width={32} height={32} />
         </IconButton>
         <IconButton
           sx={buttonSx(isItalic)}
           onClick={() => editor.chain().focus().toggleItalic().run()}
         >
-          <FormatItalicIcon />
+          <FormatItalicIcon width={32} height={32} />
         </IconButton>
         <IconButton
           sx={buttonSx(isUnderline)}
           onClick={() => editor.chain().focus().toggleUnderline().run()}
         >
-          <FormatUnderlineIcon />
+          <FormatUnderlineIcon width={32} height={32} />
         </IconButton>
         <IconButton
           sx={buttonSx(isBulletList)}
           onClick={() => editor.chain().focus().toggleBulletList().run()}
         >
-          <FormatBulletListIcon />
+          <FormatBulletListIcon width={32} height={32} />
         </IconButton>
       </Box>
       <EditorContent className={clsx({ error })} editor={editor} />

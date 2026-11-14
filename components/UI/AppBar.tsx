@@ -70,7 +70,7 @@ export default function AdminAppBar() {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle />
+                <AccountCircle sx={{ fontSize: 32 }} />
               </IconButton>
               <Menu
                 id="menu-appbar"

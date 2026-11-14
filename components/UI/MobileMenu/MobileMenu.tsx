@@ -26,7 +26,7 @@ export default function MobileMenu({ items }: { items: MenuItemType[] }) {
                 aria-label="menu"
                 sx={{ mr: 2 }}
               >
-                <MenuIcon />
+                <MenuIcon width={32} height={32} />
               </IconButton>
             }
           ></MenuTrigger>

@@ -31,7 +31,14 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Box sx={{ paddingX: { xs: "1rem", md: "1rem" } }}>
+    <Box
+      sx={{
+        paddingX: { xs: "1rem", md: "1rem" },
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100dvh",
+      }}
+    >
       <Box sx={{ paddingX: { xs: "0", md: "6rem" } }}>
         <TopBar />
         <Box sx={{ display: { xs: "none", md: "block" } }}>
@@ -46,11 +53,8 @@ export default function MainLayout({
           left: "1rem",
           width: "100%",
         }}
-      >
-        <MobileMenu items={mainMenuItems} />
-      </Box>
+      ></Box>
       {children}
-      <Footer />
     </Box>
   );
 }

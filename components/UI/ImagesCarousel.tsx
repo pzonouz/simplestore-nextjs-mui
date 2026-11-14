@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useMemo } from "react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -40,9 +41,10 @@ export const ImagesCarousel = ({
     >
       {allImages?.map((item) => (
         <SwiperSlide key={item?.id}>
-          {/** biome-ignore lint/performance/noImgElement: "" */}
-          <img
+          <Image
             key={item.id}
+            width={300}
+            height={300}
             style={{
               maxWidth: "100%",
               borderColor: "#EEE",

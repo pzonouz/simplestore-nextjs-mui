@@ -6,6 +6,7 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
 import { env } from "@/lib/env";
 import type { Product } from "@/lib/types";
@@ -25,7 +26,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
     >
       <Link href={`/product/${product?.slug}`}>
         <CardActionArea>
-          <CardMedia component="img" image={imageSrc} alt={product.name} />
+          <Image src={imageSrc} width={500} height={500} alt={product.name} />
           <CardContent>
             <Typography noWrap gutterBottom variant="h5" component="div">
               {product.name}

@@ -1,2 +1,6 @@
 @layer theme, base, mui, components, utilities;
-@import "tailwindcss";
+/* app/globals.css */
+html {
+  scrollbar-gutter: stable;
+  overflow-y: scroll; /* belt-and-braces for older browsers */
+}

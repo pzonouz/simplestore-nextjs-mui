@@ -15,11 +15,11 @@ export const TableRowAction = ({
   return (
     <Box>
       <IconButton color="error" onClick={() => onDelete(id)}>
-        <DeleteIcon />
+        <DeleteIcon width={32} height={32} />
       </IconButton>
       <Link href={`/admin/${entity}/${id}/edit`}>
         <IconButton color="info">
-          <EditIcon />
+          <EditIcon width={32} height={32} />
         </IconButton>
       </Link>
     </Box>

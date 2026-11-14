@@ -1,5 +1,6 @@
 "use client";
 import { Box } from "@mui/material";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { env } from "@/lib/env";
 import type { FileType } from "@/lib/types";
@@ -29,8 +30,9 @@ export const ImageShow = ({
 
   return (
     <div>
-      {/* biome-ignore lint/performance/noImgElement: hero image, fixed dimensions */}
-      <img
+      <Image
+        width={400}
+        height={400}
         style={{
           borderColor: "#EEE",
           borderWidth: "1px",
@@ -44,13 +46,11 @@ export const ImageShow = ({
         {allImages
           .filter((i) => i.url !== showingImage.url)
           .map((f) => (
-            // biome-ignore lint/a11y/useKeyWithClickEvents: ""
-            // biome-ignore lint/performance/noImgElement: ""
-            <img
+            <Image
               key={f.id}
-              // biome-ignore lint/a11y/useKeyWithClickEvents: thumbnail gallery
-              // biome-ignore lint/performance/noImgElement: thumbnail, fixed size
               onClick={() => setShowingImage(f)}
+              width={70}
+              height={70}
               style={{
                 maxWidth: "6rem",
                 borderColor: "#EEE",

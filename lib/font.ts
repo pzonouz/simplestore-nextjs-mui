@@ -48,4 +48,6 @@ export const iransansx = localFont({
     },
   ],
   variable: "--font-iransansx",
+  display: "swap",
+  fallback: ["Arial", "sans-serif"],
 });

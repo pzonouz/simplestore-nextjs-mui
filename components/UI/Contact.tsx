@@ -1,4 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
+import Image from "next/image";
 
 export const Contact = () => {
   return (
@@ -23,8 +24,7 @@ export const Contact = () => {
         href="https://ble.ir/nanochemshop" // Replace with your link
         target="_blank"
       >
-        {/** biome-ignore lint/performance/noImgElement: "" */}
-        <img src="/images/bale.svg" alt="Bale" width={40} height={40} />
+        <Image src="/images/bale.svg" alt="Bale" width={40} height={40} />
       </Box>
 
       <Button
@@ -40,8 +40,7 @@ export const Contact = () => {
         href="https://t.me/nanochemshop" // Replace with your link
         target="_blank"
       >
-        {/** biome-ignore lint/performance/noImgElement: "" */}
-        <img src="/images/telegram.svg" alt="Bale" width={40} height={40} />
+        <Image src="/images/telegram.svg" alt="Bale" width={40} height={40} />
       </Button>
 
       <Typography

@@ -1,6 +1,7 @@
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Box, Typography } from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
 import { Search } from "../DATA/Search";
 
@@ -12,12 +13,17 @@ export const TopBar = () => {
         flexDirection: { xs: "column", md: "row" },
         alignItems: "center",
         gap: "1rem",
-        marginTop: "1rem",
+        paddingTop: "1rem",
       }}
     >
-      <Link href="/">
-        {/** biome-ignore lint/performance/noImgElement: "" */}
-        <img src="/images/logo.webp" alt="logo" width={70} height={70} />
+      <Link href="/" style={{ zIndex: "100" }}>
+        <Image
+          src="/images/logo.webp"
+          alt="logo"
+          width={86}
+          height={70}
+          priority
+        />
       </Link>
       <Search />
       <Box
@@ -35,9 +41,10 @@ export const TopBar = () => {
             padding: "1rem",
             borderRadius: "4px",
             cursor: "pointer",
+            alignItems: "center",
           }}
         >
-          <AccountCircleOutlinedIcon />
+          <AccountCircleOutlinedIcon sx={{ fontSize: 32 }} />
           <Typography>حساب کابری</Typography>
         </Box>
 
@@ -51,7 +58,7 @@ export const TopBar = () => {
             cursor: "pointer",
           }}
         >
-          <ShoppingCartOutlinedIcon />
+          <ShoppingCartOutlinedIcon sx={{ fontSize: 32 }} />
         </Box>
       </Box>
     </Box>

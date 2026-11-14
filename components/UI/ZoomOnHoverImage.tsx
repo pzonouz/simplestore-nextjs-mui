@@ -10,7 +10,6 @@ export function ZoomOnHoverImage({
   width,
   height,
   sizes = "(max-width: 600px) 100vw, 400px",
-  priority = false, // ← new prop
 }: {
   src: string;
   alt: string;
@@ -59,8 +58,7 @@ export function ZoomOnHoverImage({
         touchAction: "none",
       }}
     >
-      {/** biome-ignore lint/performance/noImgElement: <explanation> */}
-      <img
+      <Image
         src={src}
         alt={alt}
         sizes={sizes}

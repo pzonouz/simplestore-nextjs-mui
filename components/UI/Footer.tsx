@@ -17,7 +17,8 @@ export default function Footer() {
       sx={{
         bgcolor: "#1f2937",
         color: "common.white",
-        mt: 64,
+        // mt: 64,
+        mt: "auto",
         py: 4,
         fontFamily: "iransansx",
       }}

@@ -1,10 +1,11 @@
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@mui/material/styles";
-import { MyCachProvider } from "@/components/Providers/CacheProvider";
+import { RtlCacheProvider } from "@/components/Providers/CacheProvider";
 import StoreProvider from "@/components/Providers/StoreProvider";
 import { SnackBar } from "@/components/UI/SnackBar";
+import WebVitalsDebugger from "@/components/Utils";
 import { env } from "@/lib/env";
 import { iransansx } from "@/lib/font";
 import { theme } from "./theme";
@@ -23,16 +24,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${iransansx.variable} h-full antialiased`}
     >
       <body>
-        <StoreProvider>
-          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <MyCachProvider>
+        <RtlCacheProvider>
+          <AppRouterCacheProvider>
+            <StoreProvider>
               <ThemeProvider theme={theme}>
                 <SnackBar />
+                <WebVitalsDebugger />
                 {children}
               </ThemeProvider>
-            </MyCachProvider>
+            </StoreProvider>
           </AppRouterCacheProvider>
-        </StoreProvider>
+        </RtlCacheProvider>
       </body>
     </html>
   );

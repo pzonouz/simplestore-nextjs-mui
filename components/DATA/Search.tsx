@@ -7,6 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { env } from "@/lib/env";
@@ -46,7 +47,7 @@ export const Search = () => {
           input: {
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon sx={{ fontSize: "2rem" }} />
+                <SearchIcon width={32} height={32} sx={{ fontSize: "2rem" }} />
               </InputAdornment>
             ),
             sx: {
@@ -74,22 +75,36 @@ export const Search = () => {
             display: "flex",
             flexDirection: "column",
             gap: "1rem",
+            minHeight: "220px",
           }}
         >
           {loading ? (
             // 1) Loading → skeleton, same width as the TextField
-            <>
+            <Box
+              sx={{
+                width: 1,
+                display: "flex",
+                alignItems: "center",
+                p: "1rem",
+                gap: "1rem",
+              }}
+            >
               <Skeleton
-                variant="rounded"
+                variant="rectangular"
+                width={100}
                 height={100}
-                sx={{ width: 1, borderRadius: "1rem" }}
+                sx={{ borderRadius: "0.5rem" }}
               />
-              <Skeleton
-                variant="rounded"
-                height={100}
-                sx={{ width: 1, borderRadius: "1rem" }}
-              />
-            </>
+              <Box sx={{ flex: 1 }}>
+                <Skeleton variant="text" width="80%" height={24} />
+                <Skeleton
+                  variant="text"
+                  width="60%"
+                  height={24}
+                  sx={{ mt: 0.5 }}
+                />
+              </Box>
+            </Box>
           ) : hasResults ? (
             // 2) Has results → render them
             data.map((item: productSearchResult) => (
@@ -106,13 +121,14 @@ export const Search = () => {
                     display: "flex",
                     alignItems: "center",
                     padding: "1rem",
+                    gap: "1rem",
                     backgroundColor: "grey.200",
                   }}
                 >
-                  {/** biome-ignore lint/a11y/useAltText: "" */}
-                  {/** biome-ignore lint/performance/noImgElement: "" */}
-                  <img
-                    style={{ aspectRatio: 1, height: "4rem" }}
+                  <Image
+                    alt=""
+                    width={100}
+                    height={100}
                     src={`${env.NEXT_PUBLIC_BASE_URL}/${item?._source.image_url}`}
                   />
                   <Typography id="results">{item._source.name}</Typography>
