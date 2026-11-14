@@ -21,8 +21,6 @@ export const Search = () => {
     refetchOnMountOrArgChange: true,
   });
 
-  // `isLoading` = first load for this keyword; `isFetching` = any request
-  // in flight (including refetch). Use whichever you want to drive the skeleton.
   const loading = isLoading || isFetching;
   const hasResults = !!data && data.length > 0;
 
@@ -67,15 +65,13 @@ export const Search = () => {
           sx={{
             position: "absolute",
             top: "calc(100% + 8px)",
-            left: 0,
             width: 1, // 100% of wrapper = same width as TextField
             zIndex: 50,
             backgroundColor: "white",
-            padding: "1rem",
+            paddingY: "1rem",
             display: "flex",
             flexDirection: "column",
             gap: "1rem",
-            minHeight: "220px",
           }}
         >
           {loading ? (
@@ -114,13 +110,18 @@ export const Search = () => {
                 }}
                 key={item._source.id}
                 href={`/product/${item?._source?.slug}`}
+                style={{
+                  width: "100%",
+                  color: "black",
+                  textDecoration: "none",
+                }}
               >
                 <Box
                   sx={{
                     width: 1,
                     display: "flex",
                     alignItems: "center",
-                    padding: "1rem",
+                    paddingY: "1rem",
                     gap: "1rem",
                     backgroundColor: "grey.200",
                   }}

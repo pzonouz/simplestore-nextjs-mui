@@ -177,6 +177,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               borderColor: "#EEE",
               borderWidth: "1px",
               padding: "1rem",
+              borderStyle: "solid",
               borderRadius: "1rem",
               width: { xs: 1, md: "33%" },
             }}
@@ -195,6 +196,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               borderColor: "#EEE",
               borderWidth: "1px",
               borderRadius: "1rem",
+              borderStyle: "solid",
               display: "flex",
               flexDirection: "column",
               gap: "1rem",

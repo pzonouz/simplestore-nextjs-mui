@@ -29,7 +29,19 @@ export const ImageShow = ({
   const [showingImage, setShowingImage] = useState<Thumb>(mainImage);
 
   return (
-    <div>
+    <Box
+      sx={{
+        borderColor: "#EEE",
+        borderWidth: "1px",
+        borderRadius: "1rem",
+        borderStyle: "solid",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingTop: "1rem",
+      }}
+    >
       <Image
         width={400}
         height={400}
@@ -37,12 +49,21 @@ export const ImageShow = ({
           borderColor: "#EEE",
           borderWidth: "1px",
           borderRadius: "1rem",
+          borderStyle: "solid",
           aspectRatio: 1,
         }}
         alt={showingImage.name}
         src={`${env.NEXT_PUBLIC_BASE_URL}/${showingImage.url}`}
       />
-      <Box id="images" sx={{ display: "flex", gap: "1rem", padding: "1rem" }}>
+      <Box
+        id="images"
+        sx={{
+          display: "flex",
+          gap: "1rem",
+          justifyContent: "start",
+          padding: "1rem",
+        }}
+      >
         {allImages
           .filter((i) => i.url !== showingImage.url)
           .map((f) => (
@@ -57,12 +78,13 @@ export const ImageShow = ({
                 borderWidth: "1px",
                 borderRadius: "0.5rem",
                 aspectRatio: 1,
+                borderStyle: "solid",
               }}
               alt={f.name}
               src={`${env.NEXT_PUBLIC_BASE_URL}/${f.url}`}
             />
           ))}
       </Box>
-    </div>
+    </Box>
   );
 };
