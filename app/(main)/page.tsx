@@ -30,28 +30,28 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  const productsRes = await fetch(`${env.API_URL}/products`);
+  const products = await productsRes.json();
   return (
     <>
       <Box
         sx={{
-          position: "relative", // Required for fill
-          width: "100%",
-          aspectRatio: { xs: "2 / 1", md: "3 / 1" }, // Reserves space
-          minHeight: { xs: "50vw", md: "33.33vw" }, // matches the ratio
+          width: 1,
+          aspectRatio: { xs: "2/1", md: "3 / 1" },
+          position: "relative",
         }}
       >
         <Image
           src="/images/Hero3.webp"
           alt="hero pic"
-          fill // Use fill instead of width/height
+          fill
           priority
-          quality={70}
           sizes="100vw"
-          style={{ objectFit: "cover" }} // Ensures the image covers the box
+          style={{ objectFit: "cover" }}
         />
       </Box>
-      {/*<Box sx={{ minHeight: "40rem" }}>
+      <Box>
         <Box
           sx={{
             marginTop: { md: "8rem" },
@@ -66,11 +66,11 @@ export default function Home() {
             جدیدترین محصولات
           </Typography>
 
-          <Box sx={{ padding: "2rem", minHeight: "300px" }}>
+          <Box sx={{ padding: "2rem" }}>
             <ProductCarousel items={products} />
           </Box>
         </Box>
-    </Box >*/}
+      </Box>
     </>
   );
 }
