@@ -5,7 +5,6 @@ import { ThemeProvider } from "@mui/material/styles";
 import { RtlCacheProvider } from "@/components/Providers/CacheProvider";
 import StoreProvider from "@/components/Providers/StoreProvider";
 import { SnackBar } from "@/components/UI/SnackBar";
-import WebVitalsDebugger from "@/components/Utils";
 import { env } from "@/lib/env";
 import { iransansx } from "@/lib/font";
 import { theme } from "./theme";
@@ -29,7 +28,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <StoreProvider>
               <ThemeProvider theme={theme}>
                 <SnackBar />
-                <WebVitalsDebugger />
                 {children}
               </ThemeProvider>
             </StoreProvider>
