@@ -161,9 +161,11 @@ export function MenuSubmenuTrigger(
       <ListItemText>{children}</ListItemText>
       {hint && <StyledHint>{hint}</StyledHint>}
       <ChevronRightIcon
-        className="rtl:-scale-x-100"
         fontSize="small"
-        sx={{ mr: -1 }}
+        sx={(theme) => ({
+          mr: -1,
+          transform: theme.direction === "rtl" ? "rotate(180deg)" : "none",
+        })}
       />
     </Menu.SubmenuTrigger>
   );

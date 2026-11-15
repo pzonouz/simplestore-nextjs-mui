@@ -28,7 +28,16 @@ export const RecursiveMobileMenu = ({ item }: { item: MenuItemType }) => {
   } else {
     return (
       <MenuItem>
-        {item?.href ? <Link href={item?.href}>{item?.title}</Link> : item.title}
+        {item?.href ? (
+          <Link
+            style={{ textDecoration: "none", color: "black" }}
+            href={item?.href}
+          >
+            {item?.title}
+          </Link>
+        ) : (
+          item.title
+        )}
       </MenuItem>
     );
   }

@@ -23,16 +23,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${iransansx.variable} h-full antialiased`}
     >
       <body>
-        <RtlCacheProvider>
-          <AppRouterCacheProvider>
+        <AppRouterCacheProvider>
+          <RtlCacheProvider>
             <StoreProvider>
               <ThemeProvider theme={theme}>
                 <SnackBar />
                 {children}
               </ThemeProvider>
             </StoreProvider>
-          </AppRouterCacheProvider>
-        </RtlCacheProvider>
+          </RtlCacheProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
