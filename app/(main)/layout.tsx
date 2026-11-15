@@ -37,6 +37,7 @@ export default function MainLayout({
         display: "flex",
         flexDirection: "column",
         minHeight: "100dvh",
+        gap: { xs: "1rem", md: "0" },
       }}
     >
       <Box sx={{ paddingX: { xs: "0", md: "6rem" } }}>
@@ -53,8 +54,11 @@ export default function MainLayout({
           left: "1rem",
           width: "100%",
         }}
-      ></Box>
+      >
+        <MobileMenu items={mainMenuItems} />
+      </Box>
       {children}
+      <Footer />
     </Box>
   );
 }

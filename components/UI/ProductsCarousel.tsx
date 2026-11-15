@@ -17,11 +17,9 @@ export const ProductCarousel = ({ items }: { items: Product[] }) => {
       autoHeight
       modules={[Navigation, Pagination, Autoplay]}
       centeredSlides={true}
+      lazyPreload={true}
       spaceBetween={50}
       breakpoints={{ 0: { slidesPerView: 1 }, 768: { slidesPerView: 3 } }}
-      autoplay={{
-        delay: 3000,
-      }}
       loop
       navigation
       pagination={{ clickable: true }}

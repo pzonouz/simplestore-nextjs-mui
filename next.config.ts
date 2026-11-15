@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    optimizePackageImports: ["@mui/material", "@mui/icons-material"],
+  },
   images: {
     remotePatterns: [new URL("http://localhost/uploads/**")],
     dangerouslyAllowLocalIP: true,

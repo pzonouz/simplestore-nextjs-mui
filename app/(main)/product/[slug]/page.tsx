@@ -153,7 +153,10 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
           <Box
             sx={{
               position: "relative",
-              width: "33%",
+              width: {
+                xs: 1,
+                md: "33%",
+              },
               aspectRatio: 4 / 3,
               display: { xs: "none", sm: "block" },
             }}
