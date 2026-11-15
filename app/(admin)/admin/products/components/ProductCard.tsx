@@ -11,9 +11,7 @@ import { env } from "@/lib/env";
 import type { Product } from "@/lib/types";
 
 export const ProductCard = ({ product }: { product: Product }) => {
-  const imageSrc = product.imageUrl
-    ? `${env.NEXT_PUBLIC_BASE_URL}/${product.imageUrl}`
-    : "/images/pc.png";
+  const imageSrc = product.imageUrl ? `${product.imageUrl}` : "/images/pc.png";
 
   return (
     <Card
@@ -28,7 +26,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
     >
       <CardActionArea
         component={Link}
-        href={`/product/${product.slug}`}
+        href={`/ product / ${product.slug}`}
         sx={{
           flex: 1,
           display: "flex",
