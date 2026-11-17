@@ -16,8 +16,9 @@ export const TopBar = () => {
         paddingTop: "1rem",
       }}
     >
-      <Link href="/" style={{ zIndex: "100" }}>
+      <Link href="/" style={{ zIndex: "-100", position: "relative" }}>
         <Image
+          style={{ zIndex: "-100", position: "relative" }}
           src="/images/logo.webp"
           alt="logo"
           width={86}

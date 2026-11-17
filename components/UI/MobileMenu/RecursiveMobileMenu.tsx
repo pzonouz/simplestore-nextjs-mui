@@ -8,17 +8,41 @@ import {
   MenuSubmenuRoot,
   MenuSubmenuTrigger,
 } from "./MenuBar.tsx";
-export const RecursiveMobileMenu = ({ item }: { item: MenuItemType }) => {
+export const RecursiveMobileMenu = ({
+  isRoot = true,
+  item,
+  addressPrefix,
+}: {
+  item: MenuItemType;
+  isRoot?: boolean;
+  addressPrefix: string;
+}) => {
   const hasChildren = item?.children && item?.children?.length > 0;
   if (hasChildren) {
     return (
       <MenuSubmenuRoot>
-        <MenuSubmenuTrigger>{item?.name}</MenuSubmenuTrigger>
+        <MenuSubmenuTrigger>
+          {isRoot ? (
+            <>{item?.name}</>
+          ) : (
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              href={item?.slug ?? "#"}
+            >
+              {item?.name}
+            </Link>
+          )}
+        </MenuSubmenuTrigger>
         <MenuPortal>
           <MenuPositioner alignOffset={-4}>
             <MenuPopup>
               {item?.children?.map((item) => (
-                <RecursiveMobileMenu key={item?.name} item={item} />
+                <RecursiveMobileMenu
+                  isRoot={false}
+                  addressPrefix={addressPrefix}
+                  key={item?.name}
+                  item={item}
+                />
               ))}
             </MenuPopup>
           </MenuPositioner>
@@ -28,16 +52,12 @@ export const RecursiveMobileMenu = ({ item }: { item: MenuItemType }) => {
   } else {
     return (
       <MenuItem>
-        {item?.slug ? (
-          <Link
-            style={{ textDecoration: "none", color: "black" }}
-            href={item?.slug}
-          >
-            {item?.name}
-          </Link>
-        ) : (
-          item.name
-        )}
+        <Link
+          style={{ textDecoration: "none", color: "black" }}
+          href={`${addressPrefix}/${item?.slug}`}
+        >
+          {item.name}
+        </Link>
       </MenuItem>
     );
   }
