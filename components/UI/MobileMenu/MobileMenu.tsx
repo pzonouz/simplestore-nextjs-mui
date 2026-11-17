@@ -14,7 +14,7 @@ import { RecursiveMobileMenu } from "./RecursiveMobileMenu.tsx";
 
 export default function MobileMenu({ items }: { items: MenuItemType[] }) {
   return (
-    <Box>
+    <Box sx={{ zIndex: "2000" }}>
       <Menubar dir="rtl">
         <MenuRoot>
           <MenuTrigger
@@ -34,7 +34,7 @@ export default function MobileMenu({ items }: { items: MenuItemType[] }) {
             <MenuPositioner sideOffset={4} alignOffset={-2}>
               <MenuPopup>
                 {items?.map((item) => (
-                  <RecursiveMobileMenu key={item?.title} item={item} />
+                  <RecursiveMobileMenu key={item?.name} item={item} />
                 ))}
               </MenuPopup>
             </MenuPositioner>

@@ -13,12 +13,12 @@ export const RecursiveMobileMenu = ({ item }: { item: MenuItemType }) => {
   if (hasChildren) {
     return (
       <MenuSubmenuRoot>
-        <MenuSubmenuTrigger>{item?.title}</MenuSubmenuTrigger>
+        <MenuSubmenuTrigger>{item?.name}</MenuSubmenuTrigger>
         <MenuPortal>
           <MenuPositioner alignOffset={-4}>
             <MenuPopup>
               {item?.children?.map((item) => (
-                <RecursiveMobileMenu key={item?.title} item={item} />
+                <RecursiveMobileMenu key={item?.name} item={item} />
               ))}
             </MenuPopup>
           </MenuPositioner>
@@ -28,15 +28,15 @@ export const RecursiveMobileMenu = ({ item }: { item: MenuItemType }) => {
   } else {
     return (
       <MenuItem>
-        {item?.href ? (
+        {item?.slug ? (
           <Link
             style={{ textDecoration: "none", color: "black" }}
-            href={item?.href}
+            href={item?.slug}
           >
-            {item?.title}
+            {item?.name}
           </Link>
         ) : (
-          item.title
+          item.name
         )}
       </MenuItem>
     );
