@@ -8,6 +8,7 @@ import MultipleImageSelector from "./MultipleImageSelector";
 
 export const MultipleImageManager = ({
   fileIds,
+  onChange,
 }: {
   fileIds: string[];
   onChange: (fileIds: string[]) => void;
