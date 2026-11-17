@@ -17,7 +17,10 @@ export default async function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const menuItemsRes = await fetch(`${env.API_URL}/categories/categories_tree`);
+  const menuItemsRes = await fetch(
+    `${env.API_URL}/categories/categories_tree`,
+    { cache: "no-store" },
+  );
   const menuItems = await menuItemsRes.json();
   return (
     <Box
