@@ -1,5 +1,5 @@
-export const revalidate = 3600;
 export const dynamicParams = true;
+export const dynamic = "force-dynamic";
 
 import { Box, Typography } from "@mui/material";
 import { env } from "@/lib/env";
