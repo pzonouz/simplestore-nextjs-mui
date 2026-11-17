@@ -4,20 +4,7 @@ import Footer from "@/components/UI/Footer";
 import { MainMenubar } from "@/components/UI/MainMenu/MainMenu";
 import MobileMenu from "@/components/UI/MobileMenu/MobileMenu";
 import { TopBar } from "@/components/UI/TopBar";
-import type { MenuItemType } from "@/lib/types";
-
-export const mainMenuItems: MenuItemType[] = [
-  { title: "خانه", href: "/" },
-  {
-    title: "محصولات",
-    children: [
-      {
-        title: "مواد شیمیایی",
-        children: [{ title: "آزمایشگاهی" }, { title: "صنعتی" }],
-      },
-    ],
-  },
-];
+import { env } from "@/lib/env";
 
 export const metadata: Metadata = {
   title: {
@@ -25,11 +12,13 @@ export const metadata: Metadata = {
     template: "%s | نانوشاپ", // Pattern for child pages
   },
 };
-export default function MainLayout({
+export default async function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const menuItemsRes = await fetch(`${env.API_URL}/categories/categories_tree`);
+  const menuItems = await menuItemsRes.json();
   return (
     <Box
       sx={{
@@ -43,7 +32,7 @@ export default function MainLayout({
       <Box sx={{ paddingX: { xs: "0", md: "6rem" } }}>
         <TopBar />
         <Box sx={{ display: { xs: "none", md: "block" } }}>
-          <MainMenubar items={mainMenuItems} />
+          <MainMenubar items={menuItems ?? []} addressPrefix="category" />
         </Box>
       </Box>
       <Box
@@ -55,7 +44,7 @@ export default function MainLayout({
           width: "100%",
         }}
       >
-        <MobileMenu items={mainMenuItems} />
+        <MobileMenu items={menuItems ?? []} />
       </Box>
       {children}
       <Footer />

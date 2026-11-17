@@ -35,6 +35,12 @@ export default function AdminCatgories() {
       cell: (info) => <i>{info.getValue<string>()}</i>,
     },
     {
+      accessorFn: (row) => row.slug,
+      id: "مسیر",
+      header: () => <span>مسیر</span>,
+      cell: (info) => <i>{info.getValue<string>()}</i>,
+    },
+    {
       header: "عملیات",
       cell: ({ row }) => (
         <TableRowAction

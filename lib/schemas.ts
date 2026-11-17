@@ -3,7 +3,9 @@ import { NameError } from "./constants";
 export const categoryCreateSchema = z.object({
   name: z.string({ error: NameError }).min(1, { error: NameError }),
   parent: z.string().nullish(),
+  slug: z.string().nullish(),
   description: z.string().nullish(),
+  priority: z.number().nullish(),
 });
 export const categorySchema = categoryCreateSchema.extend({
   id: z.string().readonly(),

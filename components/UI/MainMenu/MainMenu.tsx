@@ -1,5 +1,6 @@
 "use client";
 import { Box } from "@mui/material";
+import { useState } from "react";
 import type { MenuItemType } from "@/lib/types";
 import {
   Menubar,
@@ -12,26 +13,47 @@ import {
 } from "./MenuBar";
 import { RecursiveMainMenu } from "./RecursiveMainMenu";
 
-export function MainMenubar({ items }: { items: MenuItemType[] }) {
+export function MainMenubar({
+  items,
+  addressPrefix,
+}: {
+  items: MenuItemType[];
+  addressPrefix: string;
+}) {
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   return (
     <Menubar dir="rtl">
+      <Box>
+        <MenubarLink key={"home"} href={"/"}>
+          خانه
+        </MenubarLink>
+      </Box>
       {items?.map((item) =>
         item?.children?.length ? (
-          <MenuRoot key={item.title}>
-            <MenuTrigger>{item.title}</MenuTrigger>
+          <MenuRoot
+            key={item.id}
+            open={openMenuId === item.id}
+            onOpenChange={(open) => setOpenMenuId(open ? item.id : null)}
+          >
+            <MenuTrigger>{item.name}</MenuTrigger>
             <MenuPortal dir="rtl">
               <MenuPositioner sideOffset={4} alignOffset={-2}>
                 <MenuPopup>
                   {item.children.map((child) => (
-                    <RecursiveMainMenu key={child.title} item={child} />
+                    <RecursiveMainMenu
+                      addressPrefix={addressPrefix}
+                      key={child.id}
+                      item={child}
+                      onCloseRoot={() => setOpenMenuId(null)}
+                    />
                   ))}
                 </MenuPopup>
               </MenuPositioner>
             </MenuPortal>
           </MenuRoot>
         ) : (
-          <MenubarLink key={item.title} href={item.href ?? "#"}>
-            {item.title}
+          <MenubarLink key={item.id} href={"#"}>
+            {item.name}
           </MenubarLink>
         ),
       )}

@@ -3,16 +3,9 @@
 import { Box } from "@mui/material";
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { env } from "@/lib/env";
 import type { FileType } from "@/lib/types";
 
 export type Thumb = Pick<FileType, "id" | "name" | "url">;
-
-const getSrc = (url: string) => {
-  if (/^(https?:)?\/\//.test(url) || url.startsWith("data:")) return url;
-  const base = env.NEXT_PUBLIC_BASE_URL.replace(/\/+$/, "");
-  return `${base}/${url.replace(/^\/+/, "")}`;
-};
 
 export const ImageShow = ({
   mainImageUrl,
@@ -61,7 +54,7 @@ export const ImageShow = ({
           priority
           sizes="(max-width: 900px) 100vw, 50vw"
           alt={showingImage.name}
-          src={getSrc(showingImage.url)}
+          src={showingImage.url}
           style={{ objectFit: "cover", borderRadius: "0.5rem" }}
         />
       </Box>
@@ -100,7 +93,7 @@ export const ImageShow = ({
               fill
               sizes="70px"
               alt={f.name}
-              src={getSrc(f.url)}
+              src={f.url}
               style={{ objectFit: "cover" }}
             />
           </Box>

@@ -62,6 +62,8 @@ export function ZoomOnHoverImage({
         src={src}
         alt={alt}
         sizes={sizes}
+        width={width}
+        height={height}
         style={{
           objectFit: "cover",
           transformOrigin: origin,

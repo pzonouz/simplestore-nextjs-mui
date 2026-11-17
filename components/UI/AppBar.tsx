@@ -15,10 +15,10 @@ import type { MenuItemType } from "@/lib/types";
 import MobileMenu from "./MobileMenu/MobileMenu";
 
 const AdminMenu: MenuItemType[] = [
-  { title: "خانه", href: "/admin" },
-  { title: "دسته بندی ها", href: "/admin/categories" },
-  { title: "فایلها", href: "/admin/files" },
-  { title: "محصولات", href: "/admin/products" },
+  { id: "1", name: "خانه", slug: "/admin" },
+  { id: "2", name: "دسته بندی ها", slug: "/admin/categories" },
+  { id: "3", name: "فایلها", slug: "/admin/files" },
+  { id: "4", name: "محصولات", slug: "/admin/products" },
 ];
 export default function AdminAppBar() {
   const [auth, setAuth] = React.useState(true);

@@ -1,5 +1,4 @@
 import { Box, Button, Typography } from "@mui/material";
-import { env } from "@/lib/env";
 import type { FileType } from "@/lib/types";
 import { ZoomOnHoverImage } from "./ZoomOnHoverImage";
 
@@ -31,11 +30,7 @@ function ImageSelector({
         انتخاب
       </Button>
       <Typography>{file?.name}</Typography>
-      <ZoomOnHoverImage
-        width={96}
-        src={`${env.NEXT_PUBLIC_BASE_URL}/${file.url}`}
-        alt=""
-      />
+      <ZoomOnHoverImage width={96} height={96} src={`${file.url}`} alt="" />
     </Box>
   );
 }

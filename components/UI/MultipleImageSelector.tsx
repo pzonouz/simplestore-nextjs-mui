@@ -6,12 +6,12 @@ import { ZoomOnHoverImage } from "./ZoomOnHoverImage";
 function MultipleImageSelector({
   fileIds,
   file,
-  onChange
+  onChange,
 }: {
-    fileIds: string[];
-    file: FileType;
-    onChange: (fileIds: string[]) => void;
-  }) {
+  fileIds: string[];
+  file: FileType;
+  onChange: (fileIds: string[]) => void;
+}) {
   return (
     <Box
       sx={{
@@ -27,19 +27,15 @@ function MultipleImageSelector({
         checked={fileIds?.includes(file?.id)}
         onChange={(e) => {
           e.currentTarget?.checked
-            ? onChange([...fileIds,e.currentTarget.value])
-            :onChange(fileIds?.filter((f) => f !== e.currentTarget.value))
+            ? onChange([...fileIds, e.currentTarget.value])
+            : onChange(fileIds?.filter((f) => f !== e.currentTarget.value));
         }}
         slotProps={{
           input: { "aria-label": "controlled" },
         }}
       />
       <Typography>{file?.name}</Typography>
-      <ZoomOnHoverImage
-        width={96}
-        src={`${env.NEXT_PUBLIC_BASE_URL}/${file.url}`}
-        alt=""
-      />
+      <ZoomOnHoverImage width={96} height={96} src={`${file.url}`} alt="" />
     </Box>
   );
 }

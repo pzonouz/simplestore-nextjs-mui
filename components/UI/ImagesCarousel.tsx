@@ -1,4 +1,5 @@
 "use client";
+import { Box } from "@mui/material";
 import Image from "next/image";
 import { useMemo } from "react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -41,20 +42,29 @@ export const ImagesCarousel = ({
     >
       {allImages?.map((item) => (
         <SwiperSlide key={item?.id}>
-          <Image
-            key={item.id}
-            width={300}
-            height={300}
-            style={{
-              maxWidth: "100%",
-              borderColor: "#EEE",
-              borderWidth: "1px",
-              borderRadius: "0.5rem",
-              aspectRatio: 1,
+          <Box
+            sx={{
+              width: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
-            alt={item.name}
-            src={`${env.NEXT_PUBLIC_BASE_URL}/${item.url}`}
-          />
+          >
+            <Image
+              key={item.id}
+              width={300}
+              height={300}
+              style={{
+                maxWidth: "100%",
+                borderColor: "#EEE",
+                borderWidth: "1px",
+                borderRadius: "0.5rem",
+                aspectRatio: 1,
+              }}
+              alt={item.name}
+              src={`${item.url}`}
+            />
+          </Box>
         </SwiperSlide>
       ))}
     </Swiper>

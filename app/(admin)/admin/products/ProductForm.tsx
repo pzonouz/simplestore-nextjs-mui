@@ -29,7 +29,6 @@ import { Tiptap } from "@/components/DATA/Tiptap";
 import { ImageManager } from "@/components/UI/ImageManager";
 import { MultipleImageManager } from "@/components/UI/MultipleImageManager";
 import { ZoomOnHoverImage } from "@/components/UI/ZoomOnHoverImage";
-import { env } from "@/lib/env";
 import {
   api,
   useCreateProductMutation,
@@ -364,7 +363,7 @@ export const ProductForm = ({
                         height={64}
                         scale={5}
                         alt=""
-                        src={`${env.NEXT_PUBLIC_BASE_URL}/${field.value}`}
+                        src={`${field.value}`}
                       />
                       <Button
                         variant="outlined"
@@ -421,7 +420,7 @@ export const ProductForm = ({
                             height={64}
                             scale={5}
                             alt=""
-                            src={`${env.NEXT_PUBLIC_BASE_URL}/${file?.url}`}
+                            src={`${file?.url}`}
                           />
                           <Button
                             variant="outlined"

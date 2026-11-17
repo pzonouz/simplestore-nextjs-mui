@@ -1,8 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { forEach } from "@tiptap/react";
 import { env } from "../env";
 import type {
   Category,
   FileType,
+  MenuItemType,
   Product,
   productSearchResult,
   Signin,
@@ -160,6 +162,27 @@ export const api = createApi({
         };
       },
     }),
+    getCategoriesTree: builder.query<MenuItemType[], void>({
+      query: () => `categories/parent_categories`,
+    }),
+    getSubCategories: builder.query<Category[], string>({
+      query: (slug) => `categories/sub_categories/${slug}`,
+      providesTags: ["categories"],
+    }),
+    getProductsByCategorySlug: builder.query<Product[], string>({
+      query: (slug) => `products/category_products/by_slug/${slug}`,
+      providesTags: ["categories"],
+    }),
+    getProductsByCategoriesSlugs: builder.query<Product[], string[]>({
+      query: (slugs) => {
+        const params = new URLSearchParams();
+        slugs?.forEach((slug) => {
+          params.append("slug", slug);
+        });
+        return `products/categories_products/by_slugs?${params}`;
+      },
+      providesTags: ["products"],
+    }),
   }),
 });
 
@@ -183,4 +206,8 @@ export const {
   useSearchProductsQuery,
   useSigninMutation,
   useSignupMutation,
+  useGetCategoriesTreeQuery,
+  useGetSubCategoriesQuery,
+  useGetProductsByCategorySlugQuery,
+  useGetProductsByCategoriesSlugsQuery,
 } = api;

@@ -158,7 +158,7 @@ export const FileForm = ({
                     scale={5}
                     width={100}
                     height={100}
-                    src={`${env.NEXT_PUBLIC_BASE_URL}/${url}`}
+                    src={`${url}`}
                     alt=""
                   />
                 </Box>

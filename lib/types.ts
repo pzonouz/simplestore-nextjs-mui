@@ -8,8 +8,10 @@ import type {
   signupSchema,
 } from "./schemas";
 export type MenuItemType = {
-  title: string;
-  href?: string;
+  id: string;
+  name: string;
+  slug?: string;
+  root?: boolean;
   children?: MenuItemType[];
 };
 

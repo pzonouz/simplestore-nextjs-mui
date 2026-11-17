@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   useCreateCategoryMutation,
@@ -31,12 +32,21 @@ export const CategoryForm = ({
   category?: Category;
   externlLoading?: boolean;
 }) => {
-  const { handleSubmit, reset, control } = useForm({
+  const {
+    handleSubmit,
+    reset,
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(categoryCreateSchema),
     defaultValues: category ?? {
       name: "",
+      slug: "",
       parent: null,
       description: "",
+      priority: 100,
     },
   });
   const { data: categories, isLoading: getIsLoading } = useGetCategoriesQuery();
@@ -46,6 +56,15 @@ export const CategoryForm = ({
     useCreateCategoryMutation();
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: ""
+  useEffect(() => {
+    setValue("slug", watch("name").replaceAll(" ", "_"));
+  }, [setValue, watch("name")]);
+
   return (
     <Box
       onSubmit={handleSubmit((data) => {
@@ -112,6 +131,41 @@ export const CategoryForm = ({
                   renderInput={(params) => (
                     <TextField inputRef={field.ref} {...params} label="والد" />
                   )}
+                />
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Controller
+              name="slug"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  sx={{ width: 1 }}
+                  label="مسیر"
+                  variant="outlined"
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                />
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Controller
+              name="priority"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  value={field.value}
+                  onChange={(e) => {
+                    e.target.value = e.target.value.replace(/\D/g, "");
+                    field.onChange(Number(e.target.value));
+                  }}
+                  sx={{ width: 1 }}
+                  variant="outlined"
+                  label="اولویت"
+                  error={!!fieldState.error}
                 />
               )}
             />

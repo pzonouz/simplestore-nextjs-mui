@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardActionArea,
@@ -7,7 +8,6 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import { env } from "@/lib/env";
 import type { Product } from "@/lib/types";
 
 export const ProductCard = ({ product }: { product: Product }) => {
@@ -26,7 +26,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
     >
       <CardActionArea
         component={Link}
-        href={`/ product / ${product.slug}`}
+        href={`/product/${product.slug}`}
         sx={{
           flex: 1,
           display: "flex",
@@ -52,7 +52,12 @@ export const ProductCard = ({ product }: { product: Product }) => {
         </CardMedia>
 
         <CardContent sx={{ flex: 1 }}>
-          <Typography noWrap gutterBottom variant="h5" component="div">
+          <Typography
+            noWrap
+            gutterBottom
+            component="div"
+            sx={{ fontWeight: "700" }}
+          >
             {product.name}
           </Typography>
           <Typography sx={{ fontWeight: 700 }}>

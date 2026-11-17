@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { MenuItemType } from "@/lib/types";
 import {
   MenuItem,
@@ -8,18 +9,46 @@ import {
   MenuSubmenuTrigger,
 } from "./MenuBar";
 
-export const RecursiveMainMenu = ({ item }: { item: MenuItemType }) => {
+export const RecursiveMainMenu = ({
+  item,
+  addressPrefix,
+  onCloseRoot,
+}: {
+  item: MenuItemType;
+  addressPrefix: string;
+  onCloseRoot?: () => void;
+}) => {
   const hasChildren = !!item?.children?.length;
 
   if (hasChildren) {
     return (
       <MenuSubmenuRoot>
-        <MenuSubmenuTrigger>{item.title}</MenuSubmenuTrigger>
+        <MenuSubmenuTrigger
+          onClick={() => {
+            if (onCloseRoot) {
+              onCloseRoot();
+            }
+          }}
+        >
+          <Link
+            style={{
+              color: "inherit",
+              textDecoration: "none",
+            }}
+            href={`/${addressPrefix}/${item?.slug}`}
+          >
+            {item.name}
+          </Link>
+        </MenuSubmenuTrigger>
         <MenuPortal>
           <MenuPositioner side="left" alignOffset={-4}>
             <MenuPopup>
               {item.children?.map((child) => (
-                <RecursiveMainMenu key={child.title} item={child} />
+                <RecursiveMainMenu
+                  addressPrefix={addressPrefix}
+                  key={child.id}
+                  item={child}
+                />
               ))}
             </MenuPopup>
           </MenuPositioner>
@@ -28,5 +57,9 @@ export const RecursiveMainMenu = ({ item }: { item: MenuItemType }) => {
     );
   }
 
-  return <MenuItem href={item?.href}>{item.title}</MenuItem>;
+  return (
+    <MenuItem href={`/${addressPrefix}/${item?.slug}`} closeOnClick>
+      {item.name}
+    </MenuItem>
+  );
 };

@@ -34,7 +34,9 @@ export default function AdminFiles() {
           <ZoomOnHoverImage
             priority={row.index === 0}
             scale={5}
-            src={`${env.NEXT_PUBLIC_BASE_URL}/${row?.original?.url}`}
+            width={60}
+            height={60}
+            src={`${row?.original?.url}`}
             alt={row?.original?.name}
           />
         </Box>

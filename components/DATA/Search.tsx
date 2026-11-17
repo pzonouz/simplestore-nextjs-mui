@@ -130,7 +130,7 @@ export const Search = () => {
                     alt=""
                     width={100}
                     height={100}
-                    src={`${env.NEXT_PUBLIC_BASE_URL}/${item?._source.image_url}`}
+                    src={`${item?._source.image_url}`}
                   />
                   <Typography id="results">{item._source.name}</Typography>
                 </Box>
