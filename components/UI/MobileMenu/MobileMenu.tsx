@@ -35,13 +35,12 @@ export default function MobileMenu({ items }: { items: MenuItemType[] }) {
             <MenuPositioner
               sideOffset={4}
               alignOffset={-2}
-              // style={{ zIndex: 1400 }}
               style={{ zIndex: theme.zIndex.modal + 1 }}
             >
               <MenuPopup>
                 {items?.map((item) => (
                   <RecursiveMobileMenu
-                    addressPrefix="category"
+                    addressPrefix="/category"
                     key={item?.name}
                     item={item}
                   />
