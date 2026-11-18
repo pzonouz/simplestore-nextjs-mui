@@ -1,8 +1,9 @@
-import { Box } from "@mui/material";
+import { Box, SwipeableDrawer } from "@mui/material";
 import type { Metadata } from "next";
 import Footer from "@/components/UI/Footer";
 import { MainMenubar } from "@/components/UI/MainMenu/MainMenu";
 import MobileMenu from "@/components/UI/MobileMenu/MobileMenu";
+import { MobileMenuTreeView } from "@/components/UI/MobileMenu/MobileMenuTreeView";
 import { TopBar } from "@/components/UI/TopBar";
 import { env } from "@/lib/env";
 
@@ -47,7 +48,7 @@ export default async function MainLayout({
           width: "100%",
         }}
       >
-        <MobileMenu items={menuItems ?? []} />
+        <MobileMenuTreeView items={menuItems} />
       </Box>
       {children}
       <Footer />

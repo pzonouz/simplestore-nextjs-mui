@@ -23,6 +23,7 @@ export const ProductCarousel = ({ items }: { items: Product[] }) => {
       loop
       navigation
       pagination={{ clickable: true }}
+      style={{ position: "relative", zIndex: "-1" }}
     >
       {items?.map((item) => (
         <SwiperSlide key={item?.id}>

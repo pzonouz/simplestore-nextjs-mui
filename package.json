@@ -19,6 +19,7 @@
     "@mui/material": "^9.5.0",
     "@mui/material-nextjs": "^9.5.0",
     "@mui/stylis-plugin-rtl": "^9.5.0",
+    "@mui/x-tree-view": "^9.18.0",
     "@reduxjs/toolkit": "^2.14.0",
     "@t3-oss/env-nextjs": "^0.13.11",
     "@tanstack/react-table": "^9.3.1",
