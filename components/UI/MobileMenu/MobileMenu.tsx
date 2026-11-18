@@ -40,11 +40,7 @@ export default function MobileMenu({ items }: { items: MenuItemType[] }) {
             >
               <MenuPopup>
                 {items?.map((item) => (
-                  <RecursiveMobileMenu
-                    addressPrefix="/category"
-                    key={item?.name}
-                    item={item}
-                  />
+                  <RecursiveMobileMenu key={item?.name} item={item} />
                 ))}
               </MenuPopup>
             </MenuPositioner>
