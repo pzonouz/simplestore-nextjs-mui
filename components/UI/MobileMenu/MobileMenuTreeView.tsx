@@ -46,12 +46,24 @@ export const MobileMenuTreeView = ({ items }: { items: MenuItemType[] }) => {
       sx={{
         bgcolor: "white",
         position: "relative",
-        width: "2rem",
+        width: "0",
         zIndex: 1000,
       }}
     >
-      <IconButton onClick={() => setOpen((prev) => !prev)}>
-        {open ? <CloseIcon /> : <MenuIcon sx={{ cursor: "pointer" }} />}
+      <IconButton
+        sx={{
+          bgcolor: "background.paper", // theme-aware surface (light/dark)
+          color: "text.primary", // theme-aware icon color
+          border: 1,
+          borderColor: "divider",
+          boxShadow: 2,
+          "&:hover": {
+            bgcolor: "action.hover",
+          },
+        }}
+        onClick={() => setOpen((prev) => !prev)}
+      >
+        {<MenuIcon sx={{ cursor: "pointer" }} />}
       </IconButton>
 
       <SwipeableDrawer

@@ -10,7 +10,13 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/lib/types";
 
-export const ProductCard = ({ product }: { product: Product }) => {
+export const ProductCard = ({
+  product,
+  carousel = false,
+}: {
+  product: Product;
+  carousel?: boolean;
+}) => {
   const imageSrc = product.imageUrl ? `${product.imageUrl}` : "/images/pc.png";
 
   return (
@@ -19,10 +25,10 @@ export const ProductCard = ({ product }: { product: Product }) => {
         border: "2px solid",
         borderColor: "grey.200",
         borderRadius: "8px",
-        // 20rem fixed height only makes sense in the column layout
         minHeight: { md: "20rem" },
+        width: 1,
         display: "flex",
-        flexDirection: "column", // single child → row/column is a no-op
+        flexDirection: "column",
       }}
     >
       <CardActionArea
@@ -31,19 +37,27 @@ export const ProductCard = ({ product }: { product: Product }) => {
         sx={{
           flex: 1,
           display: "flex",
-          // ⬇️ This is the important one
-          flexDirection: { xs: "row", md: "column" },
+          // carousel → always column; otherwise → row on mobile, column on desktop
+          flexDirection: carousel ? "column" : { xs: "row", md: "column" },
           alignItems: "stretch",
           textDecoration: "none",
+          width: 1,
+          minWidth: 0,
         }}
       >
         <CardMedia
           sx={{
             position: "relative", // required for <Image fill />
-            flexShrink: 0, // don't let the text squish the image on xs
-            width: { xs: 120, sm: 160, md: "100%" },
-            // Square on md+, natural height (stretched by flexbox) on xs
-            aspectRatio: { xs: "auto", md: "1 / 1" },
+            flexShrink: 0, // don't let the text squish the image in row layout
+            width: {
+              xs: carousel ? "100%" : 120,
+              sm: carousel ? "100%" : 160,
+              md: "100%",
+            },
+            aspectRatio: {
+              xs: carousel ? "1 / 1" : "auto",
+              md: "1 / 1",
+            },
           }}
         >
           <Image
@@ -55,17 +69,15 @@ export const ProductCard = ({ product }: { product: Product }) => {
           />
         </CardMedia>
 
-        <CardContent sx={{ flex: 1, minWidth: 0 }}>
-          {/* minWidth: 0 so noWrap Typography can actually truncate */}
+        <CardContent sx={{ flex: 1, minWidth: 0, width: 1 }}>
           <Typography
             gutterBottom
             component="div"
+            title={product.name}
             sx={{
+              whiteSpace: "normal",
+              wordBreak: "normal", // standard wrap
               fontWeight: 700,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              maxWidth: "100%", // ⬅ without this, ellipsis won't kick in
             }}
           >
             {product.name}

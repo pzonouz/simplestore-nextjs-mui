@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useMemo } from "react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { env } from "@/lib/env";
 import type { FileType } from "@/lib/types";
 import type { Thumb } from "./ImageShow";
 

@@ -72,7 +72,7 @@ const Page = () => {
             <Skeleton
               key={i}
               variant="rounded"
-              sx={{ width: 1, minHeight: "20rem" }}
+              sx={{ width: 1, minHeight: "7rem" }}
             />
           ))
         ) : isErrorSlug || isErrorSlugs ? (
@@ -95,7 +95,7 @@ const Page = () => {
           ))
         ) : (
           items.map((product) => (
-            <Box key={product.id}>
+            <Box key={product.id} sx={{ width: 1 }}>
               <ProductCard product={product} />
             </Box>
           ))

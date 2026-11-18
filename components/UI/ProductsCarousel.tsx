@@ -27,7 +27,7 @@ export const ProductCarousel = ({ items }: { items: Product[] }) => {
     >
       {items?.map((item) => (
         <SwiperSlide key={item?.id}>
-          <ProductCard product={item} />
+          <ProductCard carousel={true} product={item} />
         </SwiperSlide>
       ))}
     </Swiper>

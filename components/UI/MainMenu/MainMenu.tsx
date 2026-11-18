@@ -47,7 +47,7 @@ export function MainMenubar({
             </MenuPortal>
           </MenuRoot>
         ) : (
-          <MenubarLink key={item.id} href={"#"}>
+          <MenubarLink key={item.id} href={"/"}>
             {item.name}
           </MenubarLink>
         ),

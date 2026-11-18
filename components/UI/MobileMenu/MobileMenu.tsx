@@ -19,8 +19,9 @@ export default function MobileMenu({ items }: { items: MenuItemType[] }) {
       <Menubar dir="rtl">
         <MenuRoot>
           <MenuTrigger
-            render={
+            render={(props) => (
               <IconButton
+                {...props} // This is the crucial part: forwards onClick, ref, etc.
                 size="large"
                 edge="start"
                 color="inherit"
@@ -29,7 +30,7 @@ export default function MobileMenu({ items }: { items: MenuItemType[] }) {
               >
                 <MenuIcon width={32} height={32} />
               </IconButton>
-            }
+            )}
           ></MenuTrigger>
           <MenuPortal dir="rtl">
             <MenuPositioner

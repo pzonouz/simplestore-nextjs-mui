@@ -11,11 +11,9 @@ import {
 export const RecursiveMobileMenu = ({
   isRoot = true,
   item,
-  addressPrefix,
 }: {
   item: MenuItemType;
   isRoot?: boolean;
-  addressPrefix: string;
 }) => {
   const hasChildren = item?.children && item?.children?.length > 0;
   if (hasChildren) {
@@ -27,7 +25,7 @@ export const RecursiveMobileMenu = ({
           ) : (
             <Link
               style={{ textDecoration: "none", color: "black" }}
-              href={item?.slug ?? "#"}
+              href={item?.slug ?? "/"}
             >
               {item?.name}
             </Link>
@@ -39,7 +37,6 @@ export const RecursiveMobileMenu = ({
               {item?.children?.map((item) => (
                 <RecursiveMobileMenu
                   isRoot={false}
-                  addressPrefix={addressPrefix}
                   key={item?.name}
                   item={item}
                 />
@@ -54,7 +51,7 @@ export const RecursiveMobileMenu = ({
       <MenuItem>
         <Link
           style={{ textDecoration: "none", color: "black" }}
-          href={`${addressPrefix}/${item?.slug}`}
+          href={`${item?.slug}`}
         >
           {item.name}
         </Link>
