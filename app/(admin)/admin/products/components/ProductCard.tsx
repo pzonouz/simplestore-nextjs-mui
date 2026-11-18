@@ -58,10 +58,15 @@ export const ProductCard = ({ product }: { product: Product }) => {
         <CardContent sx={{ flex: 1, minWidth: 0 }}>
           {/* minWidth: 0 so noWrap Typography can actually truncate */}
           <Typography
-            // noWrap
             gutterBottom
             component="div"
-            sx={{ fontWeight: 700 }}
+            sx={{
+              fontWeight: 700,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              maxWidth: "100%", // ⬅ without this, ellipsis won't kick in
+            }}
           >
             {product.name}
           </Typography>
