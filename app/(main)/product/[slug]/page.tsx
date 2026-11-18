@@ -28,10 +28,9 @@ const stripHtml = (html = "") =>
 
 const getProduct = cache(async (slug: string): Promise<Product> => {
   const encodedSlug = encodeURIComponent(slug);
-  const res = await fetch(
-    `${env.API_URL}/products/by_slug/${encodedSlug}`,
-    { next: { revalidate: 3600 } }, // align fetch cache with page ISR
-  );
+  const res = await fetch(`${env.API_URL}/products/by_slug/${encodedSlug}`, {
+    next: { revalidate: 3600 }, // align fetch cache with page ISR
+  });
   if (res.status === 404) notFound();
   if (!res.ok) throw new Error(`Failed to load product: ${res.status}`);
   return res.json();
@@ -136,11 +135,15 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
       />
       <Box
         sx={{
+          border: "1px solid",
           borderColor: "grey.200",
-          borderWidth: "1px",
           borderRadius: "1rem",
           padding: "1rem",
           marginTop: "1rem",
+          maxWidth: "100%",
+          minWidth: 0,
+          boxSizing: "border-box",
+          overflow: "hidden",
         }}
       >
         <Box
@@ -148,17 +151,21 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
             gap: "1rem",
+            maxWidth: "100%",
+            minWidth: 0,
           }}
         >
+          {/* Desktop image */}
           <Box
             sx={{
               position: "relative",
-              width: {
-                xs: 1,
-                md: "33%",
-              },
+              width: { xs: 1, md: "33%" },
               aspectRatio: 4 / 3,
               display: { xs: "none", sm: "block" },
+              flexShrink: 0,
+              minWidth: 0,
+              maxWidth: "100%",
+              boxSizing: "border-box",
             }}
           >
             <ImageShow
@@ -167,43 +174,68 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               mainImageName={product?.name ?? ""}
             />
           </Box>
-          <Box sx={{ display: { xs: "block", sm: "none" } }}>
+
+          {/* Mobile image carousel */}
+          <Box
+            sx={{
+              display: { xs: "block", sm: "none" },
+              width: 1,
+              maxWidth: "100%",
+              minWidth: 0,
+              boxSizing: "border-box",
+            }}
+          >
             <ImagesCarousel
               images={images}
               mainImageUrl={product.imageUrl ?? ""}
               mainImageName={product?.name ?? ""}
             />
           </Box>
+
+          {/* Title box */}
           <Box
             sx={{
               flexShrink: 0,
-              borderColor: "#EEE",
-              borderWidth: "1px",
+              border: "1px solid #EEE",
               padding: "1rem",
-              borderStyle: "solid",
               borderRadius: "1rem",
               width: { xs: 1, md: "33%" },
+              maxWidth: "100%",
+              minWidth: 0,
+              boxSizing: "border-box",
+              overflow: "hidden",
             }}
           >
             <Typography
               component="h1"
               variant="h3"
-              sx={{ fontSize: "1.5rem", fontWeight: "bold" }}
+              sx={{
+                fontSize: "1.5rem",
+                fontWeight: "bold",
+                overflowWrap: "anywhere",
+                wordBreak: "break-word",
+                minWidth: 0,
+                maxWidth: "100%",
+              }}
             >
               {product.name}
             </Typography>
           </Box>
+
+          {/* Price / contact box */}
           <Box
             sx={{
               padding: "1rem",
-              borderColor: "#EEE",
-              borderWidth: "1px",
+              border: "1px solid #EEE",
               borderRadius: "1rem",
-              borderStyle: "solid",
               display: "flex",
               flexDirection: "column",
               gap: "1rem",
               flex: 1,
+              minWidth: 0,
+              maxWidth: "100%",
+              boxSizing: "border-box",
+              overflow: "hidden",
             }}
           >
             <Typography sx={{ fontSize: "1.2rem", fontWeight: 700 }}>
@@ -213,9 +245,20 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
           </Box>
         </Box>
       </Box>
+
+      {/* Description */}
       <Box
         id="tiptap"
-        sx={{ fontFamily: "iransansx", paddingY: "2rem" }}
+        sx={{
+          fontFamily: "iransansx",
+          paddingY: "2rem",
+          maxWidth: "100%",
+          minWidth: 0,
+          boxSizing: "border-box",
+          overflow: "hidden",
+          overflowWrap: "anywhere",
+          wordBreak: "break-word",
+        }}
         // biome-ignore lint/security/noDangerouslySetInnerHtml: ""
         dangerouslySetInnerHTML={{
           __html: product.description,

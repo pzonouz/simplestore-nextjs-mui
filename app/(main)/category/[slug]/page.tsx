@@ -44,7 +44,7 @@ const Page = () => {
   return (
     <Box
       sx={{
-        paddingX: { xs: 2, md: "6rem" },
+        paddingX: { xs: 0, md: "6rem" },
         display: "flex",
         alignItems: "flex-start",
         gap: "1rem",
@@ -61,7 +61,7 @@ const Page = () => {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(12rem, 1fr))",
+          gridTemplateColumns: { md: "repeat(auto-fill, minmax(12rem, 1fr))" },
           gap: 2,
           width: 1,
           py: "2rem",

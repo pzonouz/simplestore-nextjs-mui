@@ -23,11 +23,6 @@ export function MainMenubar({
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   return (
     <Menubar dir="rtl">
-      <Box>
-        <MenubarLink key={"home"} href={"/"}>
-          خانه
-        </MenubarLink>
-      </Box>
       {items?.map((item) =>
         item?.children?.length ? (
           <MenuRoot

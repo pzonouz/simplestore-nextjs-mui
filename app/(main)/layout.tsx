@@ -1,11 +1,11 @@
-import { Box, SwipeableDrawer } from "@mui/material";
+import { Box } from "@mui/material";
 import type { Metadata } from "next";
 import Footer from "@/components/UI/Footer";
 import { MainMenubar } from "@/components/UI/MainMenu/MainMenu";
-import MobileMenu from "@/components/UI/MobileMenu/MobileMenu";
 import { MobileMenuTreeView } from "@/components/UI/MobileMenu/MobileMenuTreeView";
 import { TopBar } from "@/components/UI/TopBar";
 import { env } from "@/lib/env";
+import type { MenuItemType } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: {
@@ -22,7 +22,11 @@ export default async function MainLayout({
     `${env.API_URL}/categories/categories_tree`,
     { cache: "no-store" },
   );
-  const menuItems = await menuItemsRes.json();
+  let menuItems: MenuItemType[] = await menuItemsRes.json();
+  menuItems = [
+    { id: "10b5972d-6eaa-4197-b5c7-b462020830d6", name: "خانه", slug: "/" },
+    ...menuItems,
+  ];
   return (
     <Box
       sx={{
