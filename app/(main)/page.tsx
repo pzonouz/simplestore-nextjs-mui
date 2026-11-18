@@ -75,7 +75,6 @@ export default async function Home() {
           padding: { xs: "1rem", md: "1rem" },
           borderRadius: { xs: 0, md: 2 },
           position: "relative",
-          zIndex: "-1",
         }}
       >
         <Typography

@@ -3,7 +3,6 @@ import "./MobileMenuTreeView.css";
 
 import { AccountCircle } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/MenuOutlined";
 import {
   Box,
@@ -70,10 +69,10 @@ export const MobileMenuTreeView = ({ items }: { items: MenuItemType[] }) => {
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        sx={{ width: "24rem" }}
+        sx={{ width: "16rem" }}
         slotProps={{
           paper: {
-            sx: { width: "20rem", maxWidth: "100vw", padding: "1rem" },
+            sx: { width: "18rem", maxWidth: "100vw", padding: "1rem" },
           },
         }}
       >
@@ -114,7 +113,7 @@ export const MobileMenuTreeView = ({ items }: { items: MenuItemType[] }) => {
                   );
                 }
               }}
-              sx={{ width: "20rem", paddingY: "1rem", marginX: "auto" }}
+              sx={{ width: "16rem", paddingY: "1rem", marginX: "auto" }}
               dir="rtl"
               items={items}
               getItemLabel={getItemLabel}
