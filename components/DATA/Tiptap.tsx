@@ -6,7 +6,6 @@ import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import FormatBulletListIcon from "@mui/icons-material/FormatListBulleted";
 import FormatUnderlineIcon from "@mui/icons-material/FormatUnderlined";
 import { Box, IconButton } from "@mui/material";
-import Underline from "@tiptap/extension-underline"; // remove if using StarterKit v3
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { clsx } from "clsx";
@@ -22,7 +21,7 @@ export const Tiptap = ({
   error: boolean;
 }) => {
   const editor = useEditor({
-    extensions: [StarterKit, Underline], // just [StarterKit] on v3
+    extensions: [StarterKit],
     content: content ?? null,
     immediatelyRender: false,
     onUpdate: ({ editor }) => {

@@ -1,16 +1,19 @@
 "use client";
+import { useMenuSubmenuRootContext } from "@base-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Autocomplete,
   Box,
   Button,
+  FormControlLabel,
   Grid,
   Skeleton,
+  Switch,
   TextField,
 } from "@mui/material";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   useCreateCategoryMutation,
@@ -32,14 +35,7 @@ export const CategoryForm = ({
   category?: Category;
   externlLoading?: boolean;
 }) => {
-  const {
-    handleSubmit,
-    reset,
-    control,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm({
+  const { handleSubmit, reset, control, setValue, watch } = useForm({
     resolver: zodResolver(categoryCreateSchema),
     defaultValues: category ?? {
       name: "",
@@ -47,6 +43,7 @@ export const CategoryForm = ({
       parent: null,
       description: "",
       priority: 100,
+      isService: false,
     },
   });
   const { data: categories, isLoading: getIsLoading } = useGetCategoriesQuery();
@@ -57,14 +54,15 @@ export const CategoryForm = ({
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
   // biome-ignore lint/correctness/useExhaustiveDependencies: ""
   useEffect(() => {
     setValue("slug", watch("name").replaceAll(" ", "_"));
   }, [setValue, watch("name")]);
-
+  // biome-ignore lint/correctness/useExhaustiveDependencies: ""
+  const parentIsService = useMemo(
+    () => categories?.find((c) => c.id === watch("parent"))?.isService,
+    [watch("parent")],
+  );
   return (
     <Box
       onSubmit={handleSubmit((data) => {
@@ -166,6 +164,25 @@ export const CategoryForm = ({
                   variant="outlined"
                   label="اولویت"
                   error={!!fieldState.error}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Controller
+              name="isService"
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={
+                    <Switch
+                      {...field}
+                      checked={parentIsService ?? field.value ?? false}
+                      disabled={parentIsService ?? false}
+                    />
+                  }
+                  label="خدمات"
                 />
               )}
             />

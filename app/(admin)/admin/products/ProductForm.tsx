@@ -16,12 +16,13 @@ import {
   MenuItem,
   Select,
   Skeleton,
+  Switch,
   TextField,
   Typography,
 } from "@mui/material";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useRouter } from "next/navigation";
-import { type ChangeEvent, useEffect, useState } from "react";
+import { type ChangeEvent, useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 import { OpenReferesh } from "@/components/DATA/OpenReferesh";
@@ -73,6 +74,7 @@ export const ProductForm = ({
       imageUrl: "",
       slug: "",
       fileIds: [],
+      isService: false,
     },
   });
   const { data: categories, isLoading: getIsLoading } = useGetCategoriesQuery();
@@ -99,6 +101,12 @@ export const ProductForm = ({
   useEffect(() => {
     setValue("slug", watch("name").replaceAll(" ", "_"));
   }, [setValue, watch("name")]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: ""
+  const categoryIsService = useMemo(
+    () => categories?.find((c) => c.id === watch("category"))?.isService,
+    [watch("category")],
+  );
   return (
     <Box
       onSubmit={handleSubmit((data) => {
@@ -204,7 +212,6 @@ export const ProductForm = ({
               }}
             />
           </Grid>
-
           <Grid size={{ xs: 12, lg: 6 }}>
             <Controller
               control={control}
@@ -259,7 +266,6 @@ export const ProductForm = ({
               )}
             />
           </Grid>
-
           <Grid size={{ xs: 12, lg: 6 }}>
             <Controller
               control={control}
@@ -348,7 +354,6 @@ export const ProductForm = ({
               />
             </Grid>
           )}
-
           {/* ── Image field ── */}
           <Grid size={{ xs: 12, lg: 6 }}>
             <Controller
@@ -464,6 +469,24 @@ export const ProductForm = ({
           <Grid size={{ xs: 12, lg: 12 }}>
             <Controller
               control={control}
+              name="isService"
+              render={({ field }) => (
+                <FormControlLabel
+                  {...field}
+                  control={
+                    <Switch
+                      checked={categoryIsService ?? field.value}
+                      disabled={categoryIsService ?? false}
+                    />
+                  }
+                  label="خدمات"
+                />
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, lg: 12 }}>
+            <Controller
+              control={control}
               name="description"
               render={({ field, fieldState }) => (
                 <Box>
@@ -481,7 +504,6 @@ export const ProductForm = ({
               )}
             />
           </Grid>
-
           <Grid size={{ xs: 12 }}>
             <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
               <Button

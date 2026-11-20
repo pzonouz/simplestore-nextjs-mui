@@ -6,6 +6,7 @@ export const categoryCreateSchema = z.object({
   slug: z.string().nullish(),
   description: z.string().nullish(),
   priority: z.number().nullish(),
+  isService: z.boolean().nullish(),
 });
 export const categorySchema = categoryCreateSchema.extend({
   id: z.string().readonly(),
@@ -42,6 +43,7 @@ export const productCreateSchema = z.object({
     .min(1, { error: "توضیحات را وارد کنید" }),
   packingType: packingTypeSchema,
   packingCoefficientTypes: z.array(z.number()),
+  isService: z.boolean().nullish(),
 });
 export const productSchema = productCreateSchema.extend({
   id: z.string().readonly(),
