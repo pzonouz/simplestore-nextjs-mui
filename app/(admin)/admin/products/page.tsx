@@ -85,7 +85,7 @@ export default function AdminCatgories() {
           </Box>
         </Box>
       </Dialog>
-      <Box sx={{ width: 1, padding: "2rem" }}>
+      <Box sx={{ width: 1 }}>
         <Typography variant="h4" sx={{ textAlign: "center" }}>
           محصولات
         </Typography>

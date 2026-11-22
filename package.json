@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "bun --bun next dev -H 0.0.0.0",
+    "dev": "bun --bun next dev --webpack -H 0.0.0.0",
     "build": "bun --bun next build",
     "start": "bun --bun next start",
     "lint": "biome check",
@@ -29,6 +29,7 @@
     "clsx": "^2.1.1",
     "install": "^0.13.0",
     "isomorphic-dompurify": "^4.7.0",
+    "mui-chips-input": "^9.0.0",
     "next": "16.4.6",
     "npm-check-updates": "^23.1.1",
     "react": "19.3.1",
@@ -54,7 +55,7 @@
     "@types/stylis": "^4.2.7",
     "babel-plugin-react-compiler": "1.0.0",
     "tailwindcss": "^4",
-    "typescript": "^7"
+    "typescript": "6"
   },
   "packageManager": "bun@1.4.4",
   "ignoreScripts": [

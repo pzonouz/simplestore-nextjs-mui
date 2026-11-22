@@ -14,6 +14,34 @@ export const categorySchema = categoryCreateSchema.extend({
   updatedAt: z.string().readonly(),
 });
 
+export const parametersGroupCreateSchema = z.object({
+  name: z.string({ error: NameError }).min(1, { error: NameError }),
+  category: z
+    .string({ message: "دسته بندی را وارد کنید" })
+    .min(1, { message: "دسته بندی را وارد کنید" }),
+});
+export const parametersGroupSchema = parametersGroupCreateSchema.extend({
+  id: z.string().readonly(),
+  categoryName: z.string().nullish().readonly(),
+  createdAt: z.string().readonly(),
+  updatedAt: z.string().readonly(),
+});
+
+export const parameterCreateSchema = z.object({
+  name: z.string({ error: NameError }).min(1, { error: NameError }),
+  parametersGroup: z
+    .string({ message: "گروه بندی را وارد کنید" })
+    .min(1, { message: "گروه بندی را وارد کنید" }),
+  parameterType: z.enum(["Boolean", "Selectable", "Text"]),
+  selectableOptions: z.array(z.string()),
+});
+export const parameterSchema = parameterCreateSchema.extend({
+  id: z.string().readonly(),
+  parametersGroupName: z.string().nullish().readonly(),
+  createdAt: z.string().readonly(),
+  updatedAt: z.string().readonly(),
+});
+
 export const fileCreateSchema = z.object({
   name: z.string({ error: NameError }).min(1, { error: NameError }),
   url: z
@@ -26,6 +54,18 @@ export const fileSchema = fileCreateSchema.extend({
   updatedAt: z.string().readonly(),
 });
 
+export const productParameterValueCreateSchema = z.object({
+  parameter: z.string().nullish(),
+  selectableValues: z.array(z.string()),
+  BooleanValue: z.boolean().nullish(),
+  TextValue: z.string().nullish(),
+});
+export const productParameterValueSchema =
+  productParameterValueCreateSchema.extend({
+    id: z.string().readonly(),
+    createdAt: z.string().readonly(),
+    updatedAt: z.string().readonly(),
+  });
 export const packingTypeSchema = z.enum(["Volume", "Quantity", "Weight"]);
 export const productCreateSchema = z.object({
   name: z.string({ error: NameError }).min(1, { error: NameError }),
@@ -42,6 +82,7 @@ export const productCreateSchema = z.object({
     .min(1, { error: "توضیحات را وارد کنید" }),
   packingType: packingTypeSchema,
   packingCoefficientTypes: z.array(z.number()),
+  productParameterValues: z.array(productParameterValueCreateSchema),
 });
 export const productSchema = productCreateSchema.extend({
   id: z.string().readonly(),

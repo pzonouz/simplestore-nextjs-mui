@@ -16,6 +16,7 @@ import {
   MenuItem,
   Select,
   Skeleton,
+  Switch,
   TextField,
   Typography,
 } from "@mui/material";
@@ -35,21 +36,29 @@ import {
   useEditProductMutation,
   useGetCategoriesQuery,
   useGetFilesQuery,
+  useGetParametersByGroupQuery,
+  useGetParametersGroupsByCategoryAncestorsQuery,
 } from "@/lib/redux/api";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { productCreateSchema } from "@/lib/schemas";
-import type { FileType, FormType, Product } from "@/lib/types";
+import type {
+  FileType,
+  FormType,
+  Parameter,
+  Product,
+  ProductParameterValueCreate,
+} from "@/lib/types";
 import { OpenErrorSnackbar, OpenSuccessSnackbar } from "@/lib/utils/snackbar";
 import { translateErrorToPersian } from "@/lib/utils/translate";
 
 export const ProductForm = ({
   type,
   product,
-  externlLoading: externalLoading = false,
+  externalLoading = false,
 }: {
   type: FormType;
   product?: Product;
-  externlLoading?: boolean;
+  externalLoading?: boolean;
 }) => {
   const {
     handleSubmit,
@@ -99,6 +108,28 @@ export const ProductForm = ({
   useEffect(() => {
     setValue("slug", watch("name").replaceAll(" ", "_"));
   }, [setValue, watch("name")]);
+  const [parametersGroup, setParametersGroup] = useState("");
+  const category = watch("category");
+  const { data: parametersGroups, isLoading: parametersGroupsIsLoading } =
+    useGetParametersGroupsByCategoryAncestorsQuery(category, {
+      skip: !category,
+    });
+  const { data: parameters, isLoading: parametersIsLoading } =
+    useGetParametersByGroupQuery(parametersGroup, {
+      skip: !parametersGroup,
+    });
+  useEffect(() => {
+    const productParameterValues: ProductParameterValueCreate[] = [];
+    parameters?.map((p: Parameter) => {
+      return productParameterValues.push({
+        BooleanValue: true,
+        TextValue: "",
+        parameter: p.id,
+        selectableValue: p.selectableOptions?.[0],
+      });
+    });
+    setValue("productParameterValues", productParameterValues ?? []);
+  }, [parameters, setValue]);
   return (
     <Box
       onSubmit={handleSubmit((data) => {
@@ -130,7 +161,11 @@ export const ProductForm = ({
       sx={{ padding: "1rem" }}
     >
       {getIsLoading || externalLoading ? (
-        <Skeleton />
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          {Array.from([1, 2, 3, 4, 5, 6]).map((i) => (
+            <Skeleton key={i} height={48} />
+          ))}
+        </Box>
       ) : (
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, lg: 6 }}>
@@ -174,26 +209,32 @@ export const ProductForm = ({
               name="category"
               render={({ field, fieldState }) => (
                 <Box sx={{ flexGrow: 1 }}>
-                  <Autocomplete
-                    onChange={(_, option) => field.onChange(option?.id ?? null)}
-                    sx={{ width: 1 }}
-                    disablePortal
-                    onBlur={field.onBlur}
-                    value={
-                      categories?.find((c) => c.id === field?.value) ?? null
-                    }
-                    options={categories ?? []}
-                    getOptionLabel={(item) => item?.name}
-                    renderInput={(params) => (
-                      <TextField
-                        inputRef={field.ref}
-                        {...params}
-                        label="دسته بندی"
-                        error={!!fieldState.error}
-                        helperText={fieldState?.error?.message}
-                      />
-                    )}
-                  />
+                  {getIsLoading ? (
+                    <Skeleton />
+                  ) : (
+                    <Autocomplete
+                      onChange={(_, option) =>
+                        field.onChange(option?.id ?? null)
+                      }
+                      sx={{ width: 1 }}
+                      disablePortal
+                      onBlur={field.onBlur}
+                      value={
+                        categories?.find((c) => c.id === field?.value) ?? null
+                      }
+                      options={categories ?? []}
+                      getOptionLabel={(item) => item?.name}
+                      renderInput={(params) => (
+                        <TextField
+                          inputRef={field.ref}
+                          {...params}
+                          label="دسته بندی"
+                          error={!!fieldState.error}
+                          helperText={fieldState?.error?.message}
+                        />
+                      )}
+                    />
+                  )}
                 </Box>
               )}
             />
@@ -460,7 +501,113 @@ export const ProductForm = ({
               )}
             />
           </Grid>
-
+          {parametersGroups && (
+            <Grid size={{ xs: 12, lg: 12 }} sx={{ display: "flex", gap: 1 }}>
+              {parametersGroupsIsLoading ? (
+                <Skeleton />
+              ) : (
+                <FormControl fullWidth>
+                  <InputLabel id="parameter-groups">گروه پارامترها</InputLabel>
+                  <Select
+                    labelId="parameter-groups"
+                    id="parameter-groups"
+                    value={parametersGroup}
+                    label="Age"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value !== null) {
+                        setParametersGroup(value as string);
+                      }
+                    }}
+                  >
+                    {parametersGroups?.map((p) => (
+                      <MenuItem key={p.id} value={p.id}>
+                        {p.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+              <OpenReferesh
+                address="/admin/parameters_groups"
+                refresher={() =>
+                  dispatch(api.util.invalidateTags(["parametersGroups"]))
+                }
+              />
+            </Grid>
+          )}
+          {parametersGroup && (
+            <Grid size={{ xs: 12, lg: 12 }}>
+              {parametersIsLoading ? (
+                <Skeleton />
+              ) : (
+                parameters?.map((p: Parameter) => {
+                  const productParameterValues = watch(
+                    "productParameterValues",
+                  );
+                  return (
+                    <Box key={p.id}>
+                      {p.parameterType === "Boolean" && (
+                        <Box>
+                          <FormGroup>
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={
+                                    productParameterValues?.find(
+                                      (ppv) => ppv.parameter === p.id,
+                                    )?.BooleanValue ?? true
+                                  }
+                                  onChange={(e) => {
+                                    setValue(
+                                      "productParameterValues",
+                                      productParameterValues?.map((ppv) =>
+                                        ppv.parameter === p.id
+                                          ? {
+                                            ...ppv,
+                                            BooleanValue:
+                                              e.currentTarget.checked,
+                                          }
+                                          : ppv,
+                                      ),
+                                    );
+                                  }}
+                                />
+                              }
+                              label={p.name}
+                            />
+                          </FormGroup>
+                        </Box>
+                      )}
+                      {p.parameterType === "Text" && (
+                        <TextField
+                          onChange={(e) => {
+                            setValue(
+                              "productParameterValues",
+                              productParameterValues?.map((ppv) =>
+                                ppv.parameter === p.id
+                                  ? {
+                                    ...ppv,
+                                    TextValue: e.currentTarget.value,
+                                  }
+                                  : ppv,
+                              ),
+                            );
+                          }}
+                          value={
+                            productParameterValues?.find(
+                              (ppv) => ppv.parameter === p.id,
+                            )?.TextValue
+                          }
+                        />
+                      )}
+                      {p.parameterType === "Selectable" && <Select multiple value={} onChange={() => { }} />}
+                    </Box>
+                  );
+                })
+              )}
+            </Grid>
+          )}
           <Grid size={{ xs: 12, lg: 12 }}>
             <Controller
               control={control}

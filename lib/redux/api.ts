@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { forEach } from "@tiptap/react";
 import { env } from "../env";
 import type {
   Category,
   FileType,
   MenuItemType,
+  Parameter,
+  ParametersGroup,
   Product,
   productSearchResult,
   Signin,
@@ -17,7 +18,13 @@ export const api = createApi({
     baseUrl: env.NEXT_PUBLIC_API_URL,
     credentials: "include",
   }),
-  tagTypes: ["categories", "files", "products"],
+  tagTypes: [
+    "categories",
+    "files",
+    "products",
+    "parametersGroups",
+    "parameters",
+  ],
   endpoints: (builder) => ({
     getCategories: builder.query<Category[], void>({
       query: () => `categories`,
@@ -169,9 +176,10 @@ export const api = createApi({
       query: (slug) => `categories/sub_categories/${slug}`,
       providesTags: ["categories"],
     }),
+
     getProductsByCategorySlug: builder.query<Product[], string>({
       query: (slug) => `products/category_products/by_slug/${slug}`,
-      providesTags: ["categories"],
+      providesTags: ["categories", "products"],
     }),
     getProductsByCategoriesSlugs: builder.query<Product[], string[]>({
       query: (slugs) => {
@@ -183,6 +191,92 @@ export const api = createApi({
       },
       providesTags: ["products"],
     }),
+
+    getParametersGroups: builder.query<ParametersGroup[], void>({
+      query: () => `parameters_groups`,
+      providesTags: ["parametersGroups"],
+    }),
+    getParametersGroup: builder.query<ParametersGroup, string>({
+      query: (id) => `parameters_groups/${id}`,
+      providesTags: ["parametersGroups"],
+    }),
+    createParametersGroup: builder.mutation<void, Partial<ParametersGroup>>({
+      query(body) {
+        return {
+          url: `parameters_groups`,
+          method: "POST",
+          body: body,
+        };
+      },
+      invalidatesTags: ["parametersGroups"],
+    }),
+    editParametersGroup: builder.mutation<void, Partial<ParametersGroup>>({
+      query(body) {
+        return {
+          url: `parameters_groups/${body.id}`,
+          method: "PATCH",
+          body: body,
+        };
+      },
+      invalidatesTags: ["parametersGroups"],
+    }),
+    deleteParamatersGroup: builder.mutation<void, string>({
+      query(id) {
+        return {
+          url: `parameters_groups/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["parametersGroups"],
+    }),
+    getParametersGroupsByCategoryAncestors: builder.query<
+      ParametersGroup[],
+      string
+    >({
+      query: (id) => `parameters_groups/by_category_ancestors/${id}`,
+      providesTags: ["parametersGroups"],
+    }),
+    getParameters: builder.query<Parameter[], void>({
+      query: () => `parameters`,
+      providesTags: ["parameters"],
+    }),
+    getParameter: builder.query<Parameter, string>({
+      query: (id) => `parameters/${id}`,
+      providesTags: ["parameters"],
+    }),
+    getParametersByGroup: builder.query<Parameter[], string>({
+      query: (id) => `parameters/by_group/${id}`,
+      providesTags: ["parameters"],
+    }),
+    createParameter: builder.mutation<void, Partial<Parameter>>({
+      query(body) {
+        return {
+          url: `parameters`,
+          method: "POST",
+          body: body,
+        };
+      },
+      invalidatesTags: ["parameters"],
+    }),
+    editParameter: builder.mutation<void, Partial<Parameter>>({
+      query(body) {
+        return {
+          url: `parameters/${body.id}`,
+          method: "PATCH",
+          body: body,
+        };
+      },
+      invalidatesTags: ["parameters"],
+    }),
+    deleteParamater: builder.mutation<void, string>({
+      query(id) {
+        return {
+          url: `parameters/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["parameters"],
+    }),
   }),
 });
 
@@ -192,22 +286,41 @@ export const {
   useDeleteCategoryMutation,
   useEditCategoryMutation,
   useGetCategoryQuery,
+
   useGetFilesQuery,
   useGetFileQuery,
   useCreateFileMutation,
   useEditFileMutation,
   useUploadFileMutation,
   useDeleteFileMutation,
+
   useGetProductsQuery,
   useCreateProductMutation,
   useDeleteProductMutation,
   useEditProductMutation,
   useGetProductQuery,
   useSearchProductsQuery,
+
   useSigninMutation,
   useSignupMutation,
+
   useGetCategoriesTreeQuery,
   useGetSubCategoriesQuery,
+
   useGetProductsByCategorySlugQuery,
   useGetProductsByCategoriesSlugsQuery,
+
+  useGetParametersGroupsQuery,
+  useCreateParametersGroupMutation,
+  useDeleteParamatersGroupMutation,
+  useEditParametersGroupMutation,
+  useGetParametersGroupQuery,
+  useGetParametersGroupsByCategoryAncestorsQuery,
+
+  useGetParametersQuery,
+  useGetParametersByGroupQuery,
+  useCreateParameterMutation,
+  useDeleteParamaterMutation,
+  useEditParameterMutation,
+  useGetParameterQuery,
 } = api;

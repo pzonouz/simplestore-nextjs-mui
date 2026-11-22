@@ -13,7 +13,11 @@ const page = () => {
         ویرایش کالا
       </Typography>
       {product && (
-        <ProductForm type="EDIT" product={product} externlLoading={isLoading} />
+        <ProductForm
+          type="EDIT"
+          product={product}
+          externalLoading={isLoading}
+        />
       )}
     </Box>
   );

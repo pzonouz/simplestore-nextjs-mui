@@ -94,8 +94,11 @@ export default function AdminCatgories() {
           </Box>
         </Box>
       </Dialog>
-      <Box sx={{ width: 1, padding: "2rem" }}>
-        <Typography variant="h4" sx={{ textAlign: "center" }}>
+      <Box sx={{ width: 1 }}>
+        <Typography
+          variant="h4"
+          sx={{ textAlign: "center", paddingTop: "2rem" }}
+        >
           دسته بندی ها
         </Typography>
         <Collapsible>
