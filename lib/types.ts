@@ -5,7 +5,6 @@ import type {
   packingTypeSchema,
   parameterSchema,
   parametersGroupSchema,
-  productParameterValueCreateSchema,
   productParameterValueSchema,
   productSchema,
   signinSchema,
@@ -22,9 +21,8 @@ export type MenuItemType = {
 export type Category = z.infer<typeof categorySchema>;
 export type ParametersGroup = z.infer<typeof parametersGroupSchema>;
 export type Parameter = z.infer<typeof parameterSchema>;
-export type ProductParameterValue = z.infer<typeof productParameterValueSchema>;
-export type ProductParameterValueCreate = z.infer<
-  typeof productParameterValueCreateSchema
+export type ProductsParametersValue = z.infer<
+  typeof productParameterValueSchema
 >;
 export type FileType = z.infer<typeof fileSchema>;
 export type PackingType = z.infer<typeof packingTypeSchema>;

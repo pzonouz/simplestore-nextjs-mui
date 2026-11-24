@@ -30,6 +30,7 @@ import { Tiptap } from "@/components/DATA/Tiptap";
 import { ImageManager } from "@/components/UI/ImageManager";
 import { MultipleImageManager } from "@/components/UI/MultipleImageManager";
 import { ZoomOnHoverImage } from "@/components/UI/ZoomOnHoverImage";
+import type { ProductParameterValueCreate } from "@/lib/ProductParameterValueCreate";
 import {
   api,
   useCreateProductMutation,
@@ -41,13 +42,7 @@ import {
 } from "@/lib/redux/api";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { productCreateSchema } from "@/lib/schemas";
-import type {
-  FileType,
-  FormType,
-  Parameter,
-  Product,
-  ProductParameterValueCreate,
-} from "@/lib/types";
+import type { FileType, FormType, Parameter, Product } from "@/lib/types";
 import { OpenErrorSnackbar, OpenSuccessSnackbar } from "@/lib/utils/snackbar";
 import { translateErrorToPersian } from "@/lib/utils/translate";
 
@@ -82,6 +77,7 @@ export const ProductForm = ({
       imageUrl: "",
       slug: "",
       fileIds: [],
+      productsParametersValues: [],
     },
   });
   const { data: categories, isLoading: getIsLoading } = useGetCategoriesQuery();
@@ -93,6 +89,7 @@ export const ProductForm = ({
   const { data: files } = useGetFilesQuery();
   const [imageSelectOpen, setImageSelectOpen] = useState(false);
   const [imagesSelectOpen, setImagesSelectOpen] = useState(false);
+
   const checkboxOnChange = (e: ChangeEvent<HTMLInputElement, Element>) => {
     const value = e.currentTarget?.value;
     const checked = e.currentTarget?.checked;
@@ -104,10 +101,12 @@ export const ProductForm = ({
         : selected?.filter((v: number) => v !== Number(value)),
     );
   };
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: ""
   useEffect(() => {
     setValue("slug", watch("name").replaceAll(" ", "_"));
   }, [setValue, watch("name")]);
+
   const [parametersGroup, setParametersGroup] = useState("");
   const category = watch("category");
   const { data: parametersGroups, isLoading: parametersGroupsIsLoading } =
@@ -118,18 +117,24 @@ export const ProductForm = ({
     useGetParametersByGroupQuery(parametersGroup, {
       skip: !parametersGroup,
     });
+
   useEffect(() => {
     const productParameterValues: ProductParameterValueCreate[] = [];
     parameters?.map((p: Parameter) => {
       return productParameterValues.push({
-        BooleanValue: true,
+        BooleanValue: false,
         TextValue: "",
         parameter: p.id,
-        selectableValue: p.selectableOptions?.[0],
+        selectableValues: [],
       });
     });
-    setValue("productParameterValues", productParameterValues ?? []);
+    setValue("productsParametersValues", productParameterValues ?? []);
   }, [parameters, setValue]);
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
+
   return (
     <Box
       onSubmit={handleSubmit((data) => {
@@ -512,7 +517,7 @@ export const ProductForm = ({
                     labelId="parameter-groups"
                     id="parameter-groups"
                     value={parametersGroup}
-                    label="Age"
+                    label="گروه پارامترها"
                     onChange={(e) => {
                       const value = e.target.value;
                       if (value !== null) {
@@ -543,10 +548,10 @@ export const ProductForm = ({
               ) : (
                 parameters?.map((p: Parameter) => {
                   const productParameterValues = watch(
-                    "productParameterValues",
+                    "productsParametersValues",
                   );
                   return (
-                    <Box key={p.id}>
+                    <Box key={p.id} sx={{ maxWidth: "10rem" }}>
                       {p.parameterType === "Boolean" && (
                         <Box>
                           <FormGroup>
@@ -556,11 +561,11 @@ export const ProductForm = ({
                                   checked={
                                     productParameterValues?.find(
                                       (ppv) => ppv.parameter === p.id,
-                                    )?.BooleanValue ?? true
+                                    )?.BooleanValue ?? false
                                   }
                                   onChange={(e) => {
                                     setValue(
-                                      "productParameterValues",
+                                      "productsParametersValues",
                                       productParameterValues?.map((ppv) =>
                                         ppv.parameter === p.id
                                           ? {
@@ -581,6 +586,7 @@ export const ProductForm = ({
                       )}
                       {p.parameterType === "Text" && (
                         <TextField
+                          label={p.name}
                           onChange={(e) => {
                             setValue(
                               "productParameterValues",
@@ -597,11 +603,61 @@ export const ProductForm = ({
                           value={
                             productParameterValues?.find(
                               (ppv) => ppv.parameter === p.id,
-                            )?.TextValue
+                            )?.TextValue ?? ""
                           }
                         />
                       )}
-                      {p.parameterType === "Selectable" && <Select multiple value={} onChange={() => { }} />}
+                      {p.parameterType === "Selectable" && (
+                        <FormControl fullWidth>
+                          <InputLabel id={`options-label-${p.id}`}>
+                            موارد انتخابی
+                          </InputLabel>
+                          <Select
+                            labelId={`options-label-${p.id}`}
+                            label="موارد انتخابی"
+                            multiple
+                            value={
+                              productParameterValues?.find(
+                                (ppv) => ppv.parameter === p.id,
+                              )?.selectableValues ?? []
+                            }
+                            onChange={(e) => {
+                              const newValues = e.target.value as string[];
+
+                              const current =
+                                getValues("productParameterValues") ?? [];
+                              const exists = current.some(
+                                (ppv) => ppv.parameter === p.id,
+                              );
+
+                              const updated = exists
+                                ? current.map((ppv) =>
+                                  ppv.parameter === p.id
+                                    ? { ...ppv, selectableValues: newValues }
+                                    : ppv,
+                                )
+                                : [
+                                  ...current,
+                                  {
+                                    parameter: p.id,
+                                    selectableValues: newValues,
+                                  },
+                                ];
+
+                              setValue("productsParametersValues", updated, {
+                                shouldDirty: true,
+                                shouldValidate: true,
+                              });
+                            }}
+                          >
+                            {p.selectableOptions?.map((s) => (
+                              <MenuItem key={s} value={s}>
+                                {s}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      )}
                     </Box>
                   );
                 })

@@ -54,14 +54,14 @@ export const fileSchema = fileCreateSchema.extend({
   updatedAt: z.string().readonly(),
 });
 
-export const productParameterValueCreateSchema = z.object({
+export const productsParametersValueCreateSchema = z.object({
   parameter: z.string().nullish(),
   selectableValues: z.array(z.string()),
   BooleanValue: z.boolean().nullish(),
   TextValue: z.string().nullish(),
 });
 export const productParameterValueSchema =
-  productParameterValueCreateSchema.extend({
+  productsParametersValueCreateSchema.extend({
     id: z.string().readonly(),
     createdAt: z.string().readonly(),
     updatedAt: z.string().readonly(),
@@ -82,7 +82,7 @@ export const productCreateSchema = z.object({
     .min(1, { error: "توضیحات را وارد کنید" }),
   packingType: packingTypeSchema,
   packingCoefficientTypes: z.array(z.number()),
-  productParameterValues: z.array(productParameterValueCreateSchema),
+  productsParametersValues: z.array(productsParametersValueCreateSchema),
 });
 export const productSchema = productCreateSchema.extend({
   id: z.string().readonly(),

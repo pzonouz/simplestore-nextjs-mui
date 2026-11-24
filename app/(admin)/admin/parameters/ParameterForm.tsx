@@ -42,7 +42,6 @@ export const ParameterForm = ({
     resolver: zodResolver(parameterCreateSchema),
     defaultValues: parameter ?? {
       name: "",
-      parameterGroup: "",
       parameterType: "Text",
       selectableOptions: [],
     },
@@ -76,7 +75,7 @@ export const ParameterForm = ({
             .then(() => {
               OpenSuccessSnackbar(dispatch);
               reset();
-              router.push("/admin/parameters_groups");
+              router.push("/admin/parameters");
             })
             .catch((err: FetchBaseQueryError) => {
               OpenErrorSnackbar(dispatch, translateErrorToPersian(err));
